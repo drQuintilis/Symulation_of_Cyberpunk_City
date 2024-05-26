@@ -41,9 +41,12 @@ public class Simulation {
     public void printCitizenInfo(){
         for(int i = 0; i< citizen.size(); i++){
             Citizen activeCitizen = this.citizen.get(i);
-            System.out.println("Citizen #" + activeCitizen.agentID + ", money:" + String.format("%.2f",
-                    activeCitizen.getSavedAmount()) + ", multiplier: " + String.format("%.2f",
-                    activeCitizen.getIncomeMultiplier()));
+            System.out.println(
+                    "Citizen #" + activeCitizen.agentID +
+                            ", money:" + String.format("%.2f", activeCitizen.getSavedAmount()) +
+                            ", multiplier: " + String.format("%.2f", activeCitizen.getIncomeMultiplier()) +
+                            ", target implants: " + activeCitizen.getTargetImplantNumber()
+            );
         }
     }
 }

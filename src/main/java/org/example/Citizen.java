@@ -27,4 +27,8 @@ public class Citizen extends Agent {
     public double getIncomeMultiplier(){
         return this.incomeMultiplier;
     }
+
+    public int getTargetImplantNumber() {
+        return targetImplantNumber;
+    }
 }
