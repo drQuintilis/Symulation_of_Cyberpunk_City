@@ -1,4 +1,5 @@
 package org.example;
+import java.util.Arrays;
 
 import static org.example.EconomicEntity.*;
 public class Citizen extends Agent {
