@@ -5,15 +5,11 @@ import java.util.Random;
 public class Inequality {
     private Inequality() {}
 
-//    public static double logNormal(float multiplierMu, int multiplierSigma) {
-//        LogNormalDistribution logNormal = new LogNormalDistribution(multiplierMu, multiplierSigma);
-//        return logNormal.sample();
-//    }
-    public static double[] generateLogNormalData(int size, double meanLog, double sdLog) {
+    public static double[] generateLogNormalData(int size, double muLog, double sigmaLog) {
         double[] data = new double[size];
         for (int i = 0; i < size; i++) {
             Random random = new Random();
-            double normalValue = meanLog + sdLog * random.nextGaussian();
+            double normalValue = muLog + sigmaLog * random.nextGaussian();
             data[i] = Math.exp(normalValue);
         }
         return data;
