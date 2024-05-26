@@ -1,12 +1,14 @@
 package org.example;
+import java.io.IOException;
 import java.util.Arrays;
 
-import static org.example.EconomicEntity.*;
 public class Citizen extends Agent {
     private int targetImplantNumber;
+    private Implant[] implants;
     private double incomeMultiplier;
     private double savedAmount;
     private Simulation simulation;
+
 
     public Citizen(Simulation simulation,int agentID, int targetImplantNumber, double incomeMultiplier) {
         super(agentID);
@@ -14,6 +16,7 @@ public class Citizen extends Agent {
         this.targetImplantNumber = targetImplantNumber;
         this.simulation = simulation;
         this.savedAmount = 0;
+        this.implants = new Implant[this.targetImplantNumber];
     }
 
     public void doIncomeUpdate() {
@@ -30,5 +33,22 @@ public class Citizen extends Agent {
 
     public int getTargetImplantNumber() {
         return targetImplantNumber;
+    }
+
+    public Implant[] getImplants() {
+        return implants;
+    }
+
+    public void buyImplant(){
+        Implant implant = simulation.market.buyImplant();
+        try {
+            implant.connectImplant(this);
+        } catch (IOException e) {}
+        for(int i = 0; i < implants.length; i++) {
+            if(implants[i] == null) {
+                implants[i] = implant;
+                break;
+            }
+        }
     }
 }
