@@ -28,7 +28,7 @@ public class Simulation {
                 .reduce((a, b) -> a + " " + b) // склеивание потока в строку с разделителем
                 .orElse(""); // если поток будет пустой, то возвращает пустую строку
         System.out.println("Generated normal sample: " + formattedGauss);
-        ImplantsForCitizens city = new ImplantsForCitizens(10);
+        GenerateImplantList city = new GenerateImplantList(10);
         city.addCitizen();
         city.printImplants();
     }

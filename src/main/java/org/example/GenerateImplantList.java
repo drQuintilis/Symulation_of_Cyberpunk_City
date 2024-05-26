@@ -3,18 +3,18 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImplantsForCitizens {
+public class GenerateImplantList {
     private List<Integer> implants;
     private  GenerateTargetImplantNumber implantGenereted;
-    public ImplantsForCitizens (int numberOfCitizens){
-        implants = new ArrayList<>(numberOfCitizens);
-        implantGenereted = new GenerateTargetImplantNumber();
-        for (int i=0; i < numberOfCitizens; i++ ){
-            implants.add(implantGenereted.GenerateTargetImplantNumber());
+    public GenerateImplantList (int population) {
+        this.implants = new ArrayList<>(population);
+        this.implantGenereted = new GenerateTargetImplantNumber();
+        for (int i=0; i < population; i++ ){
+            implants.add(implantGenereted.GenerateData());
         }
     }
     public void addCitizen(){
-        implants.add(implantGenereted.GenerateTargetImplantNumber());
+        implants.add(implantGenereted.GenerateData());
     }
     public void printImplants() {
         for (int i = 0; i < implants.size(); i++) {

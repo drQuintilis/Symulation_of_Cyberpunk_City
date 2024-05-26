@@ -1,12 +1,12 @@
 package org.example;
 
-public class Citizen {
-    private int implants;
+public class Citizen{
+    private int targetImplantNumber;
 
-    public Citizen(GenerateTargetImplantNumber implantGenereted) {
-        this.implants = implantGenereted.GenerateTargetImplantNumber();
+    public Citizen(GenerateTargetImplantNumber implantNumber) {
+        this.targetImplantNumber = implantNumber.GenerateData();
     }
-    public int getImplants() {
-        return implants;
-    }
+//    public int getTargetImplantNumber() {
+//        return targetImplantNumber;
+//    }
 }

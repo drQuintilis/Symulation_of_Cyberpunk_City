@@ -2,10 +2,10 @@ package org.example;
 import java.util.Random;
 public class GenerateTargetImplantNumber {
     private Random random;
-    GenerateTargetImplantNumber() {
+    public GenerateTargetImplantNumber() {
         random = new Random();
     }
-    public int GenerateTargetImplantNumber() {
+    public int GenerateData() {
         return random.nextInt(30) + 1;
     }
 }
