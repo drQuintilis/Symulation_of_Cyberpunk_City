@@ -1,12 +1,12 @@
 package org.example;
 
 import java.util.Arrays;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.FileOutputStream;
-import java.io.IOException;
+//import org.apache.poi.ss.usermodel.*;
+//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
 
-import static org.example.DataTester.generateData;
+import static org.example.DataTester.generateData; // импорт метода из класса DataTester
 
 public class Simulation {
 
@@ -20,9 +20,9 @@ public class Simulation {
                 .orElse("");
         System.out.println("Generated log-normal sample: " + formattedSample);
 
-        Salary salary = new Salary(100f, 40f);
-        double[] gauss = generateData(salary,10);
-        Arrays.sort(gauss);
+        Salary salary = new Salary(100f, 40f); // инициализация класса
+        double[] gauss = generateData(salary,10); // вызов метода
+        Arrays.sort(gauss); // сортировка по возрастанию
         String formattedGauss = Arrays.stream(gauss) //преобразование в поток
                 .mapToObj(number -> String.format("%.2f", number)) // к каждому номеру применяется функция .format()
                 .reduce((a, b) -> a + " " + b) // склеивание потока в строку с разделителем

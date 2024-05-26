@@ -1,5 +1,5 @@
 package org.example;
-import org.apache.commons.math3.distribution.LogNormalDistribution;
+//import org.apache.commons.math3.distribution.LogNormalDistribution;
 import java.util.Random;
 
 public class Inequality implements EconomicEntity {
@@ -18,7 +18,7 @@ public class Inequality implements EconomicEntity {
         this.random = new Random(seed);
     }
 
-    public double getNextValue() {
+    public double getNextValue() { // получить слеующее рандомное значение по логонормальному распределению (одно)
         return Math.exp(this.random.nextGaussian(this.muLog, this.sigmaLog));
     }
 }
