@@ -13,8 +13,8 @@ import java.util.Arrays;
 //}
 
 public class Citizen {
-    private int[] arrayNumberOfImplants;
-    private int size;
+    private final int[] arrayNumberOfImplants;
+    private final int size;
 
     // Konstruktor do inicjalizacji tablicy implantow u citizena
     public Citizen(GenerateTargetImplantNumber implantNumber) {
