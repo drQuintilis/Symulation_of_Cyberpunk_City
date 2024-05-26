@@ -6,6 +6,6 @@ public class GenerateTargetImplantNumber {
         random = new Random();
     }
     public int GenerateData() {
-        return random.nextInt(30) + 1;
+        return random.nextInt(15) + 1;
     }
 }

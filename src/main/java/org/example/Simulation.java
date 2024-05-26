@@ -1,35 +1,49 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-//import org.apache.poi.ss.usermodel.*;
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
+import java.util.List;
 
 import static org.example.DataTester.generateData; // импорт метода из класса DataTester
 
 public class Simulation {
 
-    public static void main(String[] args) {
-        Inequality inequality = new Inequality(0f, 1.2f);
-        double[] logNormal = generateData(inequality,10);
-        Arrays.sort(logNormal);
-        String formattedSample = Arrays.stream(logNormal)
-                .mapToObj(number -> String.format("%.2f", number))
-                .reduce((a, b) -> a + " " + b)
-                .orElse("");
-        System.out.println("Generated log-normal sample: " + formattedSample);
+    Salary salary;
+    Inequality inequality;
+    List<Citizen> citizen;
 
-        Salary salary = new Salary(100f, 40f); // инициализация класса
-        double[] gauss = generateData(salary,10); // вызов метода
-        Arrays.sort(gauss); // сортировка по возрастанию
-        String formattedGauss = Arrays.stream(gauss) //преобразование в поток
-                .mapToObj(number -> String.format("%.2f", number)) // к каждому номеру применяется функция .format()
-                .reduce((a, b) -> a + " " + b) // склеивание потока в строку с разделителем
-                .orElse(""); // если поток будет пустой, то возвращает пустую строку
-        System.out.println("Generated normal sample: " + formattedGauss);
-        GenerateImplantList city = new GenerateImplantList(10);
-        city.addCitizen();
-        city.printImplants();
+    public Simulation(){
+        this.salary = new Salary(100, 40);
+        this.inequality = new Inequality(10,2);
+        GenerateTargetImplantNumber targetImplantNumber = new GenerateTargetImplantNumber();
+        this.citizen = new ArrayList<Citizen>();
+        for(int i = 0; i < 1000; i++){
+            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue()));
+        }
+    }
+
+    public Simulation(int citizenAmount){
+        this.salary = new Salary(100, 40);
+        this.inequality = new Inequality(1,3);
+        GenerateTargetImplantNumber targetImplantNumber = new GenerateTargetImplantNumber();
+        this.citizen = new ArrayList<Citizen>();
+        for(int i = 0; i < citizenAmount; i++){
+            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue()));
+        }
+    }
+
+    public void doTick() {
+        for(int i = 0; i< citizen.size(); i++){
+            citizen.get(i).doIncomeUpdate();
+        }
+    }
+
+    public void printCitizenInfo(){
+        for(int i = 0; i< citizen.size(); i++){
+            Citizen activeCitizen = this.citizen.get(i);
+            System.out.println("Citizen #" + activeCitizen.agentID + ", money:" + String.format("%.2f",
+                    activeCitizen.getSavedAmount()) + ", multiplier: " + String.format("%.2f",
+                    activeCitizen.getIncomeMultiplier()));
+        }
     }
 }
