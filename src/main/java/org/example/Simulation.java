@@ -3,15 +3,16 @@ package org.example;
 import java.util.Arrays;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
-import static org.example.Inequality.generateLogNormalData;
-import static org.example.Salary.generateNormalData;
+
+import static org.example.DataTester.generateData;
 
 public class Simulation {
+
     public static void main(String[] args) {
-        double[] logNormal = generateLogNormalData(10, 0f, 3f);
+        Inequality inequality = new Inequality(0f, 1.2f);
+        double[] logNormal = generateData(inequality,10);
         Arrays.sort(logNormal);
         String formattedSample = Arrays.stream(logNormal)
                 .mapToObj(number -> String.format("%.2f", number))
@@ -19,12 +20,13 @@ public class Simulation {
                 .orElse("");
         System.out.println("Generated log-normal sample: " + formattedSample);
 
-        double[] gauss = generateNormalData(10, 100f, 50f);
+        Salary salary = new Salary(100f, 40f);
+        double[] gauss = generateData(salary,10);
         Arrays.sort(gauss);
-        String formattedGauss = Arrays.stream(gauss)
-                .mapToObj(number -> String.format("%.2f", number))
-                .reduce((a, b) -> a + " " + b)
-                .orElse("");
+        String formattedGauss = Arrays.stream(gauss) //преобразование в поток
+                .mapToObj(number -> String.format("%.2f", number)) // к каждому номеру применяется функция .format()
+                .reduce((a, b) -> a + " " + b) // склеивание потока в строку с разделителем
+                .orElse(""); // если поток будет пустой, то возвращает пустую строку
         System.out.println("Generated normal sample: " + formattedGauss);
     }
 }

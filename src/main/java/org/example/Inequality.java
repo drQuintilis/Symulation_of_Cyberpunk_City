@@ -2,16 +2,23 @@ package org.example;
 import org.apache.commons.math3.distribution.LogNormalDistribution;
 import java.util.Random;
 
-public class Inequality {
-    private Inequality() {}
+public class Inequality implements EconomicEntity {
 
-    public static double[] generateLogNormalData(int size, double muLog, double sigmaLog) {
-        double[] data = new double[size];
-        for (int i = 0; i < size; i++) {
-            Random random = new Random();
-            double normalValue = muLog + sigmaLog * random.nextGaussian();
-            data[i] = Math.exp(normalValue);
-        }
-        return data;
+    double muLog;
+    double sigmaLog;
+    private Random random;
+    public Inequality(double muLog, double sigmaLog) {
+        this.muLog = muLog;
+        this.sigmaLog = sigmaLog;
+        this.random = new Random();
+    }
+    public Inequality(double muLog, double sigmaLog, long seed) {
+        this.muLog = muLog;
+        this.sigmaLog = sigmaLog;
+        this.random = new Random(seed);
+    }
+
+    public double getNextValue() {
+        return Math.exp(this.random.nextGaussian(this.muLog, this.sigmaLog));
     }
 }

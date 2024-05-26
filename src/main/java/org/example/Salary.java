@@ -1,16 +1,21 @@
 package org.example;
 import java.util.Random;
-public class Salary {
+public class Salary implements EconomicEntity {
 
-    private Salary(){}
-
-    public static double[] generateNormalData(int size, double mu, double sigma) {
-        double[] data = new double[size];
-        for (int i = 0; i < size; i++) {
-            Random random = new Random();
-            double normalValue = mu + sigma * random.nextGaussian();
-            data[i] = normalValue;
-        }
-        return data;
+    double mu;
+    double sigma;
+    private Random random;
+    public Salary(double mu, double sigma) {
+        this.mu = mu;
+        this.sigma = sigma;
+        this.random = new Random();
+    }
+    public Salary(double mu, double sigma, long seed) {
+        this.mu = mu;
+        this.sigma = sigma;
+        this.random = new Random(seed);
+    }
+    public double getNextValue() {
+        return this.random.nextGaussian(this.mu, this.sigma);
     }
 }
