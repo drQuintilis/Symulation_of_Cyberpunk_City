@@ -42,7 +42,7 @@ public class Simulation {
             citizen.add(new Citizen(implantNumber));
         }
         for (int i = 0; i < citizen.size(); i++) {
-            System.out.println("Citizen" + (i + 1) + ":");
+            System.out.println("Citizen " + (i + 1) + ":");
             citizen.get(i).printArray(); // halo printArray dla i elemeto ( czyli drukujeny spis implantow dla citizena 1 lub 67
     }
 }}

@@ -28,6 +28,6 @@ public class Citizen {
         }
     }
     public void printArray() {
-        System.out.println("Item array (size " + this.size + "): " + Arrays.toString(this.arrayNumberOfImplants));
+        System.out.println("How many implants citizen want's to have " + this.size + "): " + Arrays.toString(this.arrayNumberOfImplants));
     }
 }
