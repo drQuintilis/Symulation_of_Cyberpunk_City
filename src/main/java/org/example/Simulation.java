@@ -1,7 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.List;
 
 import static org.example.DataTester.generateData; // импорт метода из класса DataTester
