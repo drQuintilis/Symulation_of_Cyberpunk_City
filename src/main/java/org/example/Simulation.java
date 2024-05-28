@@ -20,7 +20,8 @@ public class Simulation {
         this.citizen = new ArrayList<Citizen>();
         this.market = new ImplantMarket();
         for(int i = 0; i < 1000; i++){
-            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue()));
+            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(),
+                    this.inequality.getNextValue()));
         }
     }
 
@@ -31,7 +32,8 @@ public class Simulation {
         this.citizen = new ArrayList<Citizen>();
         this.market = new ImplantMarket();
         for(int i = 0; i < citizenAmount; i++){
-            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue()));
+            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(),
+                    this.inequality.getNextValue()));
         }
     }
 
