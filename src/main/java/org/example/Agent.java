@@ -12,5 +12,7 @@ public abstract class Agent {
     }
 
 //    public void doMovement() {}
-//    public void die() {}
+    public void die(int agentID) {
+
+    }
 }

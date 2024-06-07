@@ -1,6 +1,5 @@
 package org.example;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Citizen extends Agent {
     private int targetImplantNumber;
@@ -9,6 +8,8 @@ public class Citizen extends Agent {
     private double savedAmount;
     private Simulation simulation;
     private int desireBuyImplantNow;
+    private boolean isDead;
+
 
 
     public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier) {
@@ -19,6 +20,7 @@ public class Citizen extends Agent {
         this.savedAmount = 0;
         this.implants = new Implant[this.targetImplantNumber];
         this.desireBuyImplantNow = 0;
+        this.isDead = false;
     }
 
     public void doIncomeUpdate() {
@@ -36,6 +38,45 @@ public class Citizen extends Agent {
                 break;
             }
         }
+    }
+
+    public int checkAcctualNumberOfImplants() {
+        int acctualNumberOfImplants = 0;
+        for (Implant implant : implants) {
+            if (implant != null) {
+                acctualNumberOfImplants += 1;
+            }
+        }
+        return acctualNumberOfImplants;
+    }
+
+    public void checkImplant(){
+        double sum = 0;
+        double middleValue = 0.0;
+
+        for (Implant implant : implants) {
+            sum += implant.probOfFailReal; //probOfFailReal was not public in ImplantMarket WHY
+            middleValue = sum / checkAcctualNumberOfImplants();
+        }
+        int i = (int)(Math.random()*101);
+        if(i <= middleValue) goCrazy();
+    }
+
+    public void doTick(){
+        if(isDead == false) {
+            doMovement();
+            checkImplant();
+        }
+    }
+
+    private void doMovement() {
+
+    }
+
+    public void goCrazy(){
+        //die(this.agentID);
+        this.isDead = true;
+        CyberPsycho psycho = new CyberPsycho(this.agentID);//call constructor to create psycho
     }
 
     public double getSavedAmount(){

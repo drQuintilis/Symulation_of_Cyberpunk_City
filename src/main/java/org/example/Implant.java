@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Implant {
     public float probOfFail;
-    private float probOfFailReal;
+    public float probOfFailReal;
     private Citizen owner;
 
     public Implant(float probOfFail, float probOfFailReal){

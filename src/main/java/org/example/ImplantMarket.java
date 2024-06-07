@@ -17,8 +17,8 @@ public class ImplantMarket {
     }
 
     public Implant buyImplant() {
-        return new Implant((float) random.nextInt(101) / 100,
-                (float) random.nextInt(101) / 100);
+        return new Implant((float) random.nextInt(101),
+                (float) random.nextInt(101));
     }
 
     public void registerImplant(Implant implant) {
