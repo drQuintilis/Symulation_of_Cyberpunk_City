@@ -6,7 +6,6 @@ public class Citizen extends Agent {
     private Implant[] implants;
     private double incomeMultiplier;
     private double savedAmount;
-    private Simulation simulation;
     private int desireBuyImplantNow;
     private boolean isDead;
     private RiskStrategy riskStrategy;
@@ -14,10 +13,9 @@ public class Citizen extends Agent {
 
 
     public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier, RiskStrategy riskStrategy) {
-        super(agentID);
+        super(agentID,simulation);
         this.incomeMultiplier = incomeMultiplier;
         this.targetImplantNumber = targetImplantNumber;
-        this.simulation = simulation;
         this.savedAmount = 0;
         this.implants = new Implant[this.targetImplantNumber];
         this.desireBuyImplantNow = 0;
@@ -27,11 +25,11 @@ public class Citizen extends Agent {
 
 
     public void doIncomeUpdate() {
-        this.savedAmount += simulation.salary.getNextValue() * this.incomeMultiplier;
+        this.savedAmount += currentSimulation.salary.getNextValue() * this.incomeMultiplier;
     }
 
     public void buyImplant(){
-        Implant implant = simulation.market.buyImplant(this.savedAmount);
+        Implant implant = currentSimulation.market.buyImplant(this.savedAmount);
         if (this.riskStrategy.shouldIBuyImplant(this, implant)) {
             try {
                 implant.connectImplant(this);
@@ -90,14 +88,14 @@ public class Citizen extends Agent {
 
     }
     private void doEconomics() {
-        this.savedAmount += this.simulation.salary.getNextValue() * this.incomeMultiplier;
+        this.savedAmount += this.currentSimulation.salary.getNextValue() * this.incomeMultiplier;
         buyImplant();
     }
 
     public void goCrazy(){
         //die(this.agentID);
         this.isDead = true;
-        CyberPsycho psycho = new CyberPsycho(this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
+        CyberPsycho psycho = new CyberPsycho(this.currentSimulation, this.agentID,  this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
     @Override
