@@ -44,6 +44,7 @@ public class Citizen extends Agent {
                 }
             }
             this.desireBuyImplantNow = 0;
+            this.savedAmount = 0;
         }
         else {
             if (this.getActualNumberOfImplants() != this.targetImplantNumber) {
@@ -68,7 +69,9 @@ public class Citizen extends Agent {
         double middleValue = 0.0;
 
         for (Implant implant : implants) {
-            sum += implant.getProbOfFailReal();
+            if(implant != null){
+                sum += implant.getProbOfFailReal();
+            }
         }
         middleValue = sum / getActualNumberOfImplants();
         int i = (int)(Math.random()*101);

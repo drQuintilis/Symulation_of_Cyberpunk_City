@@ -36,7 +36,7 @@ public class Simulation {
 
     public void doTick() {
         for(int i = 0; i< citizen.size(); i++){
-            citizen.get(i).doIncomeUpdate();
+            citizen.get(i).doTick();
         }
     }
 
