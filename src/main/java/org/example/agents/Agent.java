@@ -1,4 +1,6 @@
-package org.example;
+package org.example.agents;
+
+import org.example.Simulation;
 
 public abstract class Agent {
     public int agentID;

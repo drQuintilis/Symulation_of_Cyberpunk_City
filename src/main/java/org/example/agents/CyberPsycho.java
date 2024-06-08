@@ -1,4 +1,6 @@
-package org.example;
+package org.example.agents;
+
+import org.example.Simulation;
 
 public class CyberPsycho extends Agent{
     private int strength;

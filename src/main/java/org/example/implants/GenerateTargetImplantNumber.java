@@ -1,4 +1,4 @@
-package org.example;
+package org.example.implants;
 import java.util.Random;
 public class GenerateTargetImplantNumber {
     private Random random;

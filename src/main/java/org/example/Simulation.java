@@ -1,14 +1,22 @@
 package org.example;
 
+import org.example.agents.Agent;
+import org.example.agents.Citizen;
+import org.example.economic.Inequality;
+import org.example.economic.Salary;
+import org.example.implants.GenerateTargetImplantNumber;
+import org.example.implants.ImplantMarket;
+import org.example.riskStrategies.MediumRiskStrategyDefault;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
 
-    Salary salary;
+    private Salary salary;
     Inequality inequality;
     List<Agent> agent;
-    ImplantMarket market;
+    private ImplantMarket market;
 
     public Simulation(){
         this.salary = new Salary(100, 40);
@@ -52,5 +60,14 @@ public class Simulation {
 
     public void deRegisterAgent(Agent agent){ //"destruction"
         this.agent.remove(agent);
+    }
+
+
+    public ImplantMarket getMarket() {
+        return market;
+    }
+
+    public Salary getSalary() {
+        return salary;
     }
 }

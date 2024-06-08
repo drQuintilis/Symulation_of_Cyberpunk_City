@@ -1,4 +1,8 @@
-package org.example;
+package org.example.maxtak;
+
+import org.example.agents.Agent;
+import org.example.agents.MaxtakAgent;
+import org.example.Simulation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +35,7 @@ public class MaxtakCorp {
         for(int i = 0; ; i++){
             if(this.savedAmount > this.costOfHireUnit && this.moneyFlow
                     > (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){
-                this.maxtakAgentList.add(new MaxtakAgent(this.agent.agentID));
+                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.agent.agentID));
                 this.savedAmount -= this.costOfHireUnit;
             } else break;
         }

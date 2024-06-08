@@ -1,4 +1,4 @@
-package org.example;
+package org.example.economic;
 import java.util.Random;
 public class Salary implements EconomicEntity {
 

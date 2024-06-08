@@ -1,4 +1,6 @@
-package org.example;
+package org.example.implants;
+
+import org.example.agents.Citizen;
 
 import java.io.IOException;
 

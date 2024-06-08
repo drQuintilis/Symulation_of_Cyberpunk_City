@@ -1,4 +1,4 @@
-package org.example;
+package org.example.economic;
 //import org.apache.commons.math3.distribution.LogNormalDistribution;
 import java.util.Random;
 
