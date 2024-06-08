@@ -1,10 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
-//import java.util.Arrays;
 import java.util.List;
-
-import static org.example.DataTester.generateData; // импорт метода из класса DataTester
 
 public class Simulation {
 
@@ -20,8 +17,8 @@ public class Simulation {
         this.citizen = new ArrayList<Citizen>();
         this.market = new ImplantMarket();
         for(int i = 0; i < 1000; i++){
-            this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(),
-                    this.inequality.getNextValue()));
+            this.citizen.add(
+                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new MediumRiskStrategyDefault()));
         }
     }
 
@@ -33,7 +30,7 @@ public class Simulation {
         this.market = new ImplantMarket();
         for(int i = 0; i < citizenAmount; i++){
             this.citizen.add(new Citizen(this, i, targetImplantNumber.GenerateData(),
-                    this.inequality.getNextValue()));
+                    this.inequality.getNextValue(), new MediumRiskStrategyDefault()));
         }
     }
 
@@ -46,12 +43,13 @@ public class Simulation {
     public void printCitizenInfo(){
         for(int i = 0; i< citizen.size(); i++){
             Citizen activeCitizen = this.citizen.get(i);
-            System.out.println(
-                    "Citizen #" + activeCitizen.agentID +
-                            ", money:" + String.format("%.2f", activeCitizen.getSavedAmount()) +
-                            ", multiplier: " + String.format("%.2f", activeCitizen.getIncomeMultiplier()) +
-                            ", target implants: " + activeCitizen.getTargetImplantNumber()
-            );
+            System.out.println("Citizen#: " + activeCitizen.agentID);
+            System.out.println( "Saved amount: " + String.format("%.2f", activeCitizen.getSavedAmount()));
+            System.out.println( "Multiplier: " + String.format("%.2f", activeCitizen.getIncomeMultiplier()));
+            System.out.println( "Target implant number: " + activeCitizen.getTargetImplantNumber());
+            System.out.println("Desire to buy implant: " + activeCitizen.getDesireBuyImplantNow());
+            System.out.println("Tablica implantów: " + String.format("%.2f", activeCitizen.getImplants()));
+            System.out.println("Dead: " + activeCitizen.getIsDead());
         }
     }
 }

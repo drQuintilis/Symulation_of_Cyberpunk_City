@@ -1,8 +1,8 @@
 package org.example;
 
 public class LowRiskStrategyDefault implements RiskStrategy {
-    public static boolean shouldIBuyImplant(Citizen citizen, Implant implant){
-        if(citizen.getDesireBuyImplantNow() > implant.probOfFail) return true;
+    public boolean shouldIBuyImplant(Citizen citizen, Implant implant){
+        if(citizen.getDesireBuyImplantNow() > implant.getProbOfFail()) return true;
         else return false;
     }
 }

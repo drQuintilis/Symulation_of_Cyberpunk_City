@@ -9,10 +9,11 @@ public class Citizen extends Agent {
     private Simulation simulation;
     private int desireBuyImplantNow;
     private boolean isDead;
+    private RiskStrategy riskStrategy;
 
 
 
-    public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier) {
+    public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier, RiskStrategy riskStrategy) {
         super(agentID);
         this.incomeMultiplier = incomeMultiplier;
         this.targetImplantNumber = targetImplantNumber;
@@ -21,24 +22,36 @@ public class Citizen extends Agent {
         this.implants = new Implant[this.targetImplantNumber];
         this.desireBuyImplantNow = 0;
         this.isDead = false;
+        this.riskStrategy = riskStrategy;
     }
+
 
     public void doIncomeUpdate() {
         this.savedAmount += simulation.salary.getNextValue() * this.incomeMultiplier;
     }
 
     public void buyImplant(){
-        Implant implant = simulation.market.buyImplant();
-        try {
-            implant.connectImplant(this);
-        } catch (IOException e) {}
-        for(int i = 0; i < implants.length; i++) {
-            if(implants[i] == null) {
-                implants[i] = implant;
-                break;
+        Implant implant = simulation.market.buyImplant(this.savedAmount);
+        if (this.riskStrategy.shouldIBuyImplant(this, implant)) {
+            try {
+                implant.connectImplant(this);
+            } catch (IOException e) {
+            }
+            for (int i = 0; i < implants.length; i++) {
+                if (implants[i] == null) {
+                    implants[i] = implant;
+                    break;
+                }
+            }
+            this.desireBuyImplantNow = 0;
+        }
+        else {
+            if (this.getActualNumberOfImplants() != this.targetImplantNumber) {
+                this.desireBuyImplantNow += 1;
             }
         }
     }
+
 
     public int getActualNumberOfImplants() {
         int acctualNumberOfImplants = 0;
@@ -65,6 +78,7 @@ public class Citizen extends Agent {
     public void doTick(){
         if(!isDead) {
             doMovement();
+            doEconomics();
             checkImplant();
         }
     }
@@ -72,11 +86,20 @@ public class Citizen extends Agent {
     private void doMovement() {
 
     }
+    private void doEconomics() {
+        this.savedAmount += this.simulation.salary.getNextValue() * this.incomeMultiplier;
+        buyImplant();
+    }
 
     public void goCrazy(){
         //die(this.agentID);
         this.isDead = true;
         CyberPsycho psycho = new CyberPsycho(this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
+    }
+
+
+    public boolean getIsDead() {
+        return isDead;
     }
 
     public double getSavedAmount(){
@@ -98,4 +121,8 @@ public class Citizen extends Agent {
     public Implant[] getImplants() {
         return implants;
     }
+
+    public
+
+
 }

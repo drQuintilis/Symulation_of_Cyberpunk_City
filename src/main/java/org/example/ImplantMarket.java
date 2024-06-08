@@ -16,7 +16,7 @@ public class ImplantMarket {
         this.random = new Random();
     }
 
-    public Implant buyImplant() {
+    public Implant buyImplant(double proposedPrice) {
         return new Implant((float) random.nextInt(101),
                 (float) random.nextInt(101));
     }

@@ -3,7 +3,7 @@ package org.example;
 import java.io.IOException;
 
 public class Implant {
-    public float probOfFail;
+    private float probOfFail;
     private float probOfFailReal;
     private Citizen owner;
 
@@ -19,5 +19,9 @@ public class Implant {
 
     public float getProbOfFailReal() {
         return probOfFailReal;
+    }
+
+    public float getProbOfFail() {
+        return probOfFail;
     }
 }
