@@ -29,7 +29,7 @@ public class Implant {
 
     @Override
     public String toString() {
-        return "Prob of fail: " + this.probOfFail + "\n" +
-                "Prob of fail real: " + this.probOfFailReal;
+        return "\nProb of fail: " + String.format("%.2f", this.probOfFail) + "\t" +
+                "Prob of fail real: " + String.format("%.2f", this.probOfFailReal);
     }
 }

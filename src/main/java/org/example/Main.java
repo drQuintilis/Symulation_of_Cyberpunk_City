@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
 
         int population = 1;
-        int tick = 10;
+        int tick = 100;
 
         Simulation simulation = new Simulation(population);
         for(int i = 0; i < tick; i++){
