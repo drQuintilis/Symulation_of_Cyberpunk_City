@@ -8,4 +8,9 @@ public class CyberPsycho extends Agent{
         super(agentID, simulation);
         this.strength = strength;
     }
+
+    public String toString(){
+        return "CyberPsycho ID: " + this.agentID + "\n" +
+                "Strenght :" + this.strength;
+    }
 }

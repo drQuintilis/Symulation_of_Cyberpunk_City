@@ -11,7 +11,6 @@ public class Citizen extends Agent {
     private double incomeMultiplier;
     private double savedAmount;
     private int desireBuyImplantNow;
-    private boolean isDead;
     private RiskStrategy riskStrategy;
 
     public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier,
@@ -21,8 +20,7 @@ public class Citizen extends Agent {
         this.targetImplantNumber = targetImplantNumber;
         this.savedAmount = 0;
         this.implants = new Implant[this.targetImplantNumber];
-        this.desireBuyImplantNow = 0;
-        this.isDead = false;
+        this.desireBuyImplantNow = this.targetImplantNumber;
         this.riskStrategy = riskStrategy;
     }
 
@@ -43,7 +41,7 @@ public class Citizen extends Agent {
                     break;
                 }
             }
-            this.desireBuyImplantNow = 0;
+            this.desireBuyImplantNow = targetImplantNumber - getActualNumberOfImplants();
             this.savedAmount = 0;
         }
         else {
@@ -78,7 +76,7 @@ public class Citizen extends Agent {
     }
 
     public void doTick(){
-        if(!isDead) {
+        if(!this.isDead) {
             doMovement();
             doEconomics();
             checkImplant();
@@ -94,10 +92,8 @@ public class Citizen extends Agent {
     }
 
     public void goCrazy(){
-        //die(this.agentID);
-        this.isDead = true;
-        this.currentSimulation.deRegisterAgent(this);
-        CyberPsycho psycho = new CyberPsycho(this.currentSimulation, this.agentID,  this.getActualNumberOfImplants());//call constructor to create psycho
+        this.die();
+        new CyberPsycho(this.currentSimulation, this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
     @Override
