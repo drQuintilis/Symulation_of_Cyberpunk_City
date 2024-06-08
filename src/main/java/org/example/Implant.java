@@ -24,4 +24,10 @@ public class Implant {
     public float getProbOfFail() {
         return probOfFail;
     }
+
+    @Override
+    public String toString() {
+        return "Prob of fail: " + this.probOfFail + "\n" +
+                "Prob of fail real: " + this.probOfFailReal;
+    }
 }

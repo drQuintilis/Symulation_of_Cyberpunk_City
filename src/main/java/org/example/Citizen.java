@@ -97,6 +97,23 @@ public class Citizen extends Agent {
         CyberPsycho psycho = new CyberPsycho(this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
+    @Override
+    public String toString() {
+        String arrayOfImplants = "";
+        for(Implant implant: this.implants){
+            if(implant != null){
+                arrayOfImplants = arrayOfImplants + implant.toString();
+            }
+        }
+        return "Citizen#: " + this.agentID + "\n" +
+                "Saved amount: " + String.format("%.2f", this.savedAmount) + "\n" +
+                "Multiplier: " + String.format("%.2f", this.incomeMultiplier) + "\n" +
+                "Target implant number: " + this.targetImplantNumber + "\n" +
+                "Desire to buy implant: " + this.desireBuyImplantNow + "\n" +
+                "Tablica implantów: " + arrayOfImplants + "\n" +
+                "Dead: " + this.isDead + "\n" +
+                "Type of risk stradegy: " + this.riskStrategy.getClass().getName();
+    }
 
     public boolean getIsDead() {
         return isDead;
@@ -121,8 +138,4 @@ public class Citizen extends Agent {
     public Implant[] getImplants() {
         return implants;
     }
-
-    public
-
-
 }
