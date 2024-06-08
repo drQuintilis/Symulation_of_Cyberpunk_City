@@ -95,6 +95,7 @@ public class Citizen extends Agent {
     public void goCrazy(){
         //die(this.agentID);
         this.isDead = true;
+        this.currentSimulation.deRegisterAgent(this);
         CyberPsycho psycho = new CyberPsycho(this.currentSimulation, this.agentID,  this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
@@ -111,9 +112,9 @@ public class Citizen extends Agent {
                 "Multiplier: " + String.format("%.2f", this.incomeMultiplier) + "\n" +
                 "Target implant number: " + this.targetImplantNumber + "\n" +
                 "Desire to buy implant: " + this.desireBuyImplantNow + "\n" +
-                "Tablica implantów: " + arrayOfImplants + "\n" +
+                "Array of implants: " + arrayOfImplants + "\n" +
                 "Dead: " + this.isDead + "\n" +
-                "Type of risk stradegy: " + this.riskStrategy.getClass().getName();
+                "Type of risk strategy: " + this.riskStrategy.getClass().getName();
     }
 
     public boolean getIsDead() {

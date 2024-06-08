@@ -17,8 +17,7 @@ public class Simulation {
         this.agent = new ArrayList<Agent>();
         this.market = new ImplantMarket();
         for(int i = 0; i < 1000; i++){
-            this.agent.add(
-                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new MediumRiskStrategyDefault()));
+                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new MediumRiskStrategyDefault());
         }
     }
 
@@ -29,8 +28,8 @@ public class Simulation {
         this.agent = new ArrayList<Agent>();
         this.market = new ImplantMarket();
         for(int i = 0; i < citizenAmount; i++){
-            this.agent.add(new Citizen(this, i, targetImplantNumber.GenerateData(),
-                    this.inequality.getNextValue(), new MediumRiskStrategyDefault()));
+            new Citizen(this, i, targetImplantNumber.GenerateData(),
+                    this.inequality.getNextValue(), new MediumRiskStrategyDefault());
         }
     }
 
@@ -45,5 +44,13 @@ public class Simulation {
             Agent activeCitizen = this.agent.get(i);
             System.out.println(activeCitizen.toString());
         }
+    }
+
+    public void registerAgent(Agent agent){
+        this.agent.add(agent);
+    }
+
+    public void deRegisterAgent(Agent agent){ //"destruction"
+        this.agent.remove(agent);
     }
 }

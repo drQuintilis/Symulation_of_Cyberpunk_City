@@ -9,6 +9,7 @@ public abstract class Agent {
         this.agentID = agentID;
 //      this.position = new CitySquare();
         this.currentSimulation = currentSimulation;
+        this.currentSimulation.registerAgent(this);
     }
 
 //    public void doMovement() {}
