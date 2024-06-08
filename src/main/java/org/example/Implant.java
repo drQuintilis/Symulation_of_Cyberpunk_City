@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Implant {
     public float probOfFail;
-    public float probOfFailReal;
+    private float probOfFailReal;
     private Citizen owner;
 
     public Implant(float probOfFail, float probOfFailReal){
@@ -16,7 +16,8 @@ public class Implant {
         if (this.owner == null) this.owner = owner;
         else throw new IOException("Something happened");
     }
-    public void doTick(){
 
+    public float getProbOfFailReal() {
+        return probOfFailReal;
     }
 }

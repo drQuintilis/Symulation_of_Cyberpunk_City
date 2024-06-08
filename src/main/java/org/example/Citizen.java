@@ -40,7 +40,7 @@ public class Citizen extends Agent {
         }
     }
 
-    public int checkAcctualNumberOfImplants() {
+    public int getActualNumberOfImplants() {
         int acctualNumberOfImplants = 0;
         for (Implant implant : implants) {
             if (implant != null) {
@@ -55,15 +55,15 @@ public class Citizen extends Agent {
         double middleValue = 0.0;
 
         for (Implant implant : implants) {
-            sum += implant.probOfFailReal; //probOfFailReal was not public in ImplantMarket WHY
-            middleValue = sum / checkAcctualNumberOfImplants();
+            sum += implant.getProbOfFailReal();
         }
+        middleValue = sum / getActualNumberOfImplants();
         int i = (int)(Math.random()*101);
         if(i <= middleValue) goCrazy();
     }
 
     public void doTick(){
-        if(isDead == false) {
+        if(!isDead) {
             doMovement();
             checkImplant();
         }
@@ -76,7 +76,7 @@ public class Citizen extends Agent {
     public void goCrazy(){
         //die(this.agentID);
         this.isDead = true;
-        CyberPsycho psycho = new CyberPsycho(this.agentID);//call constructor to create psycho
+        CyberPsycho psycho = new CyberPsycho(this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
     public double getSavedAmount(){
