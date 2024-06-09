@@ -1,17 +1,18 @@
 package org.example.agents;
 
+import org.example.CitySquare;
 import org.example.Simulation;
 import org.example.implants.Implant;
 
 public abstract class Agent {
     public int agentID;
-//    private CitySquare position;
+    private CitySquare position;
     protected Simulation currentSimulation;
     protected boolean isDead;
 
-    public Agent(int agentID, Simulation currentSimulation){
+    public Agent(int agentID, Simulation currentSimulation, CitySquare citySquare){
         this.agentID = agentID;
-//      this.position = new CitySquare();
+        this.position = citySquare;
         this.currentSimulation = currentSimulation;
         this.currentSimulation.registerAgent(this);
         this.isDead = false;
@@ -22,6 +23,15 @@ public abstract class Agent {
         this.isDead = true;
         this.currentSimulation.deRegisterAgent(this);
     }
+
+    public void confirmMove(CitySquare newPosition) {
+        this.position = newPosition;
+    };
+
+    private void doMovement() {
+
+    }
+
     public void doTick(){}
 
     public String toString() {

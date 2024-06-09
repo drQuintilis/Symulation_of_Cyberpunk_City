@@ -1,4 +1,5 @@
 package org.example.agents;
+import org.example.CitySquare;
 import org.example.Simulation;
 import org.example.implants.Implant;
 import org.example.riskStrategies.RiskStrategy;
@@ -13,9 +14,9 @@ public class Citizen extends Agent {
     private int desireBuyImplantNow;
     private RiskStrategy riskStrategy;
 
-    public Citizen(Simulation simulation, int agentID, int targetImplantNumber, double incomeMultiplier,
+    public Citizen(Simulation simulation, CitySquare citySquare, int agentID, int targetImplantNumber, double incomeMultiplier,
                    RiskStrategy riskStrategy) {
-        super(agentID,simulation);
+        super(agentID,simulation, citySquare);
         this.incomeMultiplier = incomeMultiplier;
         this.targetImplantNumber = targetImplantNumber;
         this.savedAmount = 0;

@@ -13,24 +13,36 @@ public class CitySquare {
     public City cityUplink;
     public List<CitySquare> citySquareLinks;
     public List<Agent> agentsOnThisSquare;
-    public boolean isPsychoHere;
 
     //private Dictionary[] movementRequest;
 
     public CitySquare(Integer squareID, City cityUplink){
         this.agentsOnThisSquare = new LinkedList<>();
         this.citySquareLinks = new LinkedList<>();
-        this.isPsychoHere = false;
         this.squareID = squareID;
         this.cityUplink = cityUplink;
     }
 
     public void registerAgent(Agent agent){
+        if (agentsOnThisSquare.contains(agent)) return;
         this.agentsOnThisSquare.add(agent);
     }
 
-    public void deRegisterAgent(Agent agent){
+    public void deregisterAgent(Agent agent){
+        if (agentsOnThisSquare.contains(agent)) return;
         this.agentsOnThisSquare.remove(agent);
+    }
+
+    public void connectSquare(CitySquare square) {
+        if (this.citySquareLinks.contains(square)) return;
+        this.citySquareLinks.add(square);
+        square.connectSquare(this);
+    }
+
+    public void disconnectSquare(CitySquare square) {
+        if (!this.citySquareLinks.contains(square)) return;
+        this.citySquareLinks.remove(square);
+        square.disconnectSquare(this);
     }
 
     public void requestMovement(){
@@ -45,4 +57,18 @@ public class CitySquare {
 
     }
 
+    @Override
+    public String toString() {
+        LinkedList<Integer> arrayOfSquares = new LinkedList<Integer>();
+        for(CitySquare square: this.citySquareLinks){
+            if(square != null){
+                arrayOfSquares.add(square.squareID);
+            }
+        }
+        return "CitySquare{" +
+                "\n  squareID=" + squareID +
+                ",\n  citySquareLinks=" + arrayOfSquares +
+                ",\n  agentsOnThisSquare=" + agentsOnThisSquare +
+                "\n}\n";
+    }
 }

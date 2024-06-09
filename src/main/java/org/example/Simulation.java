@@ -17,6 +17,7 @@ public class Simulation {
     Inequality inequality;
     List<Agent> agents;
     private ImplantMarket market;
+    private City city;
 
     public Simulation(){
         this.salary = new Salary(100, 40);
@@ -25,7 +26,7 @@ public class Simulation {
         this.agents = new ArrayList<Agent>();
         this.market = new ImplantMarket(20000, 0.7f, 20);
         for(int i = 0; i < 1000; i++){
-                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new HighRiskStrategyDefault());
+                    new Citizen(this, city.citySquareList.get(0),  i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new HighRiskStrategyDefault());
         }
     }
 
@@ -36,7 +37,7 @@ public class Simulation {
         this.agents = new ArrayList<Agent>();
         this.market = new ImplantMarket(20000, 0.7f, 20);
         for(int i = 0; i < citizenAmount; i++){
-            new Citizen(this, i, targetImplantNumber.GenerateData(),
+            new Citizen(this, city.citySquareList.get(0), i, targetImplantNumber.GenerateData(),
                     this.inequality.getNextValue(), new HighRiskStrategyDefault());
         }
     }
