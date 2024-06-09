@@ -23,10 +23,10 @@ public class ImplantMarket {
     }
 
     public Implant buyImplant(double proposedPrice) {
-        float countProbOfFail = (float) ((this.implantCostLevel / proposedPrice)* 1f);
+        float countProbOfFail = (float) (this.implantCostLevel / proposedPrice);
         countProbOfFail = Math.min(countProbOfFail, this.maxProbOfFail);
-        float countProbOfFailReal = (float) (this.random.nextGaussian(countProbOfFail, this.implantFailureDispersion));
-        countProbOfFailReal = Math.clamp(countProbOfFailReal, 0.1f, 75);
+        float countProbOfFailReal = (float) (countProbOfFail * this.random.nextGaussian(1, this.implantFailureDispersion));
+        countProbOfFailReal = Math.clamp(countProbOfFailReal, 0.0001f, 20);
         Implant implant = new Implant(countProbOfFail, countProbOfFailReal);
         System.out.println(implant.toString());
         return implant;

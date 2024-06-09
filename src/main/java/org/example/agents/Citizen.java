@@ -29,6 +29,7 @@ public class Citizen extends Agent {
     }
 
     public void buyImplant(){
+        if (this.savedAmount == 0) return;
         Implant implant = currentSimulation.getMarket().buyImplant(this.savedAmount);
         if (this.riskStrategy.shouldIBuyImplant(this, implant)) {
             try {
@@ -61,9 +62,9 @@ public class Citizen extends Agent {
         return acctualNumberOfImplants;
     }
 
-    public int checkImplant(){
+    public void checkImplant(){
         double sum = 0;
-        double middleValue = 0.0;
+        double middleValue = 0;
 
         for (Implant implant : implants) {
             if(implant != null){
@@ -71,9 +72,9 @@ public class Citizen extends Agent {
             }
         }
         middleValue = sum / getActualNumberOfImplants();
-        int i = (int)(Math.random()*101);
+        double i = (Math.random()*101);
         if(i <= middleValue) goCrazy();
-        return i;
+        System.out.println("Random: " + i + " Middle Value: " + middleValue + " Result: " + (i <= middleValue));
     }
 
     public void doTick(){
@@ -110,7 +111,6 @@ public class Citizen extends Agent {
                 "Multiplier: " + String.format("%.2f", this.incomeMultiplier) + "\n" +
                 "Target implant number: " + this.targetImplantNumber + "\n" +
                 "Desire to buy implant: " + this.desireBuyImplantNow + "\n" +
-                "Random: " + this.checkImplant() + "\n" +
                 "Array of implants: " + arrayOfImplants + "\n" +
                 "Dead: " + this.isDead + "\n" +
                 "Type of risk strategy: " + this.riskStrategy.getClass().getName();

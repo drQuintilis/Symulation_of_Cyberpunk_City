@@ -7,6 +7,7 @@ import org.example.economic.Salary;
 import org.example.implants.GenerateTargetImplantNumber;
 import org.example.implants.Implant;
 import org.example.implants.ImplantMarket;
+import org.example.riskStrategies.HighRiskStrategyDefault;
 import org.example.riskStrategies.MediumRiskStrategyDefault;
 
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class Simulation {
         this.inequality = new Inequality(10,2);
         GenerateTargetImplantNumber targetImplantNumber = new GenerateTargetImplantNumber();
         this.agent = new ArrayList<Agent>();
-        this.market = new ImplantMarket(10000, 0.1f, 50);
+        this.market = new ImplantMarket(20000, 0.7f, 20);
         for(int i = 0; i < 1000; i++){
-                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new MediumRiskStrategyDefault());
+                    new Citizen(this, i, targetImplantNumber.GenerateData(), this.inequality.getNextValue(), new HighRiskStrategyDefault());
         }
     }
 
@@ -35,10 +36,10 @@ public class Simulation {
         this.inequality = new Inequality(1,3);
         GenerateTargetImplantNumber targetImplantNumber = new GenerateTargetImplantNumber();
         this.agent = new ArrayList<Agent>();
-        this.market = new ImplantMarket(10000, 5f, 50);
+        this.market = new ImplantMarket(20000, 0.7f, 20);
         for(int i = 0; i < citizenAmount; i++){
             new Citizen(this, i, targetImplantNumber.GenerateData(),
-                    this.inequality.getNextValue(), new MediumRiskStrategyDefault());
+                    this.inequality.getNextValue(), new HighRiskStrategyDefault());
         }
     }
 
