@@ -6,7 +6,7 @@ import org.example.implants.Implant;
 
 public abstract class Agent {
     public int agentID;
-    private CitySquare position;
+    protected CitySquare position;
     protected Simulation currentSimulation;
     protected boolean isDead;
 

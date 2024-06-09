@@ -1,5 +1,6 @@
 package org.example.maxtak;
 
+import org.example.CitySquare;
 import org.example.agents.Agent;
 import org.example.agents.MaxtakAgent;
 import org.example.Simulation;
@@ -16,14 +17,17 @@ public class MaxtakCorp {
     public Agent agent;
     public Simulation simulation;
 
+    public CitySquare position;
 
-    public MaxtakCorp(Simulation simulation, double moneyFlow, double costOfActiveUnit, double costOfHireUnit){
+
+    public MaxtakCorp(Simulation simulation, CitySquare citySquare, double moneyFlow, double costOfActiveUnit, double costOfHireUnit){
         this.moneyFlow = moneyFlow;
         this.costOfActiveUnit = costOfActiveUnit;
         this.costOfHireUnit = costOfHireUnit;
         this.savedAmount = 0;
         this.maxtakAgentList = new LinkedList<>();
         this.simulation = simulation;
+        this.position = citySquare;
     }
 
     public void doIncomeUpdate() {
@@ -35,7 +39,7 @@ public class MaxtakCorp {
         for(int i = 0; ; i++){
             if(this.savedAmount > this.costOfHireUnit && this.moneyFlow
                     > (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){
-                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.agent.agentID));
+                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.position,this.agent.agentID));
                 this.savedAmount -= this.costOfHireUnit;
             } else break;
         }

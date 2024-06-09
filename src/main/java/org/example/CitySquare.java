@@ -12,7 +12,7 @@ public class CitySquare {
     public Integer squareID;
     public City cityUplink;
     public List<CitySquare> citySquareLinks;
-    public List<Agent> agentsOnThisSquare;
+    public List<Agent> agentsOnThisSquare; //lista agentow
 
     //private Dictionary[] movementRequest;
 

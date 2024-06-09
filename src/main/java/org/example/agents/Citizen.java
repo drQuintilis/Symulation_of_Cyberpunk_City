@@ -16,7 +16,7 @@ public class Citizen extends Agent {
 
     public Citizen(Simulation simulation, CitySquare citySquare, int agentID, int targetImplantNumber, double incomeMultiplier,
                    RiskStrategy riskStrategy) {
-        super(agentID,simulation, citySquare);
+        super(agentID, simulation, citySquare);
         this.incomeMultiplier = incomeMultiplier;
         this.targetImplantNumber = targetImplantNumber;
         this.savedAmount = 0;
@@ -96,7 +96,7 @@ public class Citizen extends Agent {
 
     public void goCrazy(){
         this.die();
-        new CyberPsycho(this.currentSimulation, this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
+        new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
     }
 
     @Override
