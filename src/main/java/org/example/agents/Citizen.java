@@ -61,7 +61,7 @@ public class Citizen extends Agent {
         return acctualNumberOfImplants;
     }
 
-    public void checkImplant(){
+    public int checkImplant(){
         double sum = 0;
         double middleValue = 0.0;
 
@@ -73,6 +73,7 @@ public class Citizen extends Agent {
         middleValue = sum / getActualNumberOfImplants();
         int i = (int)(Math.random()*101);
         if(i <= middleValue) goCrazy();
+        return i;
     }
 
     public void doTick(){
@@ -109,6 +110,7 @@ public class Citizen extends Agent {
                 "Multiplier: " + String.format("%.2f", this.incomeMultiplier) + "\n" +
                 "Target implant number: " + this.targetImplantNumber + "\n" +
                 "Desire to buy implant: " + this.desireBuyImplantNow + "\n" +
+                "Random: " + this.checkImplant() + "\n" +
                 "Array of implants: " + arrayOfImplants + "\n" +
                 "Dead: " + this.isDead + "\n" +
                 "Type of risk strategy: " + this.riskStrategy.getClass().getName();

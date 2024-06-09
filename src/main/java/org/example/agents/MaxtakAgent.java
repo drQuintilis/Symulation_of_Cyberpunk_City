@@ -10,4 +10,6 @@ public class MaxtakAgent extends Agent {
         super(agentID, simulation);
 //        this.maxtakCorp = new MaxtakCorp();
     }
+
+
 }
