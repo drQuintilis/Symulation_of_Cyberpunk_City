@@ -5,11 +5,19 @@ import org.example.implants.Implant;
 import java.util.*;
 
 public class City {
-    public List<CitySquare> citySquareList;
+
+    private Random random;
+
+    private List<CitySquare> citySquareList;
 
     private int[][][] optimalPaths;
 
     public City(int[][] linkageList){
+        this(linkageList, new Random());
+    }
+
+    public City(int[][] linkageList, Random random){
+        this.random = random;
         this.citySquareList = new LinkedList<>();
         for (int i = 0; i < linkageList.length; i++) {
             for (int j = 0; j < linkageList[i].length; j++) {
@@ -23,7 +31,6 @@ public class City {
                 optimalPaths[i][j] = findShortestPath(linkageList, i, j);
             }
         }
-        System.out.println();
     }
 
     private static int[] findShortestPath(int[][] linkageList, int start, int end) {
@@ -75,7 +82,7 @@ public class City {
 
     private void generateCity(int[][] linkageList) {
         for (int i = 0; i < linkageList.length; i++) {
-            citySquareList.add(new CitySquare(i, this));
+            citySquareList.add(new CitySquare(i, this, linkageList.length));
         }
         for (int i = 0; i < linkageList.length; i++) {
             CitySquare currentSqaure = citySquareList.get(i);
@@ -87,6 +94,21 @@ public class City {
 
     public int[] getShortestPath(int start, int end) {
         return this.optimalPaths[start][end];
+    }
+
+    public void doTick(TickSteps step){
+        for (CitySquare citySquare:
+             this.citySquareList) {
+            citySquare.doTick(step);
+        }
+    }
+
+    public CitySquare[] getCitySquareList() {
+        return citySquareList.toArray(new CitySquare[0]);
+    }
+
+    public CitySquare getRandomCitySqaureForAgent() {
+        return citySquareList.get(random.nextInt(citySquareList.size()));
     }
 
     @Override

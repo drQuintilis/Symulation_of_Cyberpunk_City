@@ -1,6 +1,7 @@
 package org.example.agents;
 import org.example.CitySquare;
 import org.example.Simulation;
+import org.example.TickSteps;
 import org.example.implants.Implant;
 import org.example.riskStrategies.RiskStrategy;
 
@@ -14,10 +15,14 @@ public class Citizen extends Agent {
     private int desireBuyImplantNow;
     private RiskStrategy riskStrategy;
 
-    public Citizen(Simulation simulation, CitySquare citySquare, int agentID, int targetImplantNumber, double incomeMultiplier,
-                   RiskStrategy riskStrategy) {
+    public Citizen(
+            Simulation simulation,
+            CitySquare citySquare,
+            int agentID,
+            int targetImplantNumber,
+            RiskStrategy riskStrategy) {
         super(agentID, simulation, citySquare);
-        this.incomeMultiplier = incomeMultiplier;
+        this.incomeMultiplier = simulation.getInequality().getNextValue();
         this.targetImplantNumber = targetImplantNumber;
         this.savedAmount = 0;
         this.implants = new Implant[this.targetImplantNumber];
@@ -79,16 +84,34 @@ public class Citizen extends Agent {
         System.out.println("Random: " + i + " Middle Value: " + middleValue + " Result: " + (i <= middleValue));
     }
 
-    public void doTick(){
+    public void doTick(TickSteps step){
         if(!this.isDead) {
-            doMovement();
-            doEconomics();
-            checkImplant();
+            if (step == TickSteps.IMPLANT_STATUS_UPDATE) checkImplant();
+            if (step == TickSteps.MOVEMENTS_REQUESTS) doMovement();
+            if (step == TickSteps.ECONOMICS_UPDATE) doEconomics();
         }
     }
 
-    private void doMovement() {
-
+    protected void doMovement() {
+        if (this.position.isPsychoHere()) {
+            this.currentSimulation.getMaxtak().callThePolice(this.position.squareID);
+            CitySquare[] neighbourSquares = this.position.getCitySquareLinks();
+            this.position.requestMovement(
+                    this,
+                    neighbourSquares[
+                            (int)(Math.random()*neighbourSquares.length)
+                    ].squareID
+            );
+        }
+        if (Math.random()*100 <= 20) {
+            CitySquare[] neighbourSquares = this.position.getCitySquareLinks();
+            this.position.requestMovement(
+                    this,
+                    neighbourSquares[
+                            (int)(Math.random()*neighbourSquares.length)
+                            ].squareID
+            );
+        }
     }
     private void doEconomics() {
         this.savedAmount += this.currentSimulation.getSalary().getNextValue() * this.incomeMultiplier;

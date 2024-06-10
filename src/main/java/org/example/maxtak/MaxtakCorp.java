@@ -1,6 +1,7 @@
 package org.example.maxtak;
 
 import org.example.CitySquare;
+import org.example.TickSteps;
 import org.example.agents.Agent;
 import org.example.agents.MaxtakAgent;
 import org.example.Simulation;
@@ -14,20 +15,18 @@ public class MaxtakCorp {
     public double costOfHireUnit;
     private double savedAmount;
     public List<MaxtakAgent> maxtakAgentList;
-    public Agent agent;
     public Simulation simulation;
+    private List<Integer> activePsychoSquares;
 
-    public CitySquare position;
 
-
-    public MaxtakCorp(Simulation simulation, CitySquare citySquare, double moneyFlow, double costOfActiveUnit, double costOfHireUnit){
+    public MaxtakCorp(Simulation simulation, double moneyFlow, double costOfActiveUnit, double costOfHireUnit){
         this.moneyFlow = moneyFlow;
         this.costOfActiveUnit = costOfActiveUnit;
         this.costOfHireUnit = costOfHireUnit;
         this.savedAmount = 0;
         this.maxtakAgentList = new LinkedList<>();
         this.simulation = simulation;
-        this.position = citySquare;
+        this.activePsychoSquares = new LinkedList<Integer>();
     }
 
     public void doIncomeUpdate() {
@@ -39,15 +38,31 @@ public class MaxtakCorp {
         for(int i = 0; ; i++){
             if(this.savedAmount > this.costOfHireUnit && this.moneyFlow
                     > (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){
-                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.position,this.agent.agentID));
+                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.simulation.getRandomCitySqaureForAgent(), this.simulation.getAgentId()));
                 this.savedAmount -= this.costOfHireUnit;
             } else break;
         }
     }
 
-    public void doTick(String step){
-        doIncomeUpdate();
-        doUpdateAgents();
+    public void callThePolice(int squareId) {
+        if (!this.activePsychoSquares.contains(squareId)) {
+            this.activePsychoSquares.add(squareId);
+        }
+    }
+
+    public Integer[] getActivePsychoSquares() {
+        return activePsychoSquares.toArray(new Integer[0]);
+    }
+
+    public void doTick(TickSteps step){
+        if (step == TickSteps.ECONOMICS_UPDATE) {
+            doIncomeUpdate();
+            doUpdateAgents();
+        }
+    }
+
+    public void deregisterAgent(MaxtakAgent agent){
+        this.maxtakAgentList.remove(agent);
     }
 
     @Override

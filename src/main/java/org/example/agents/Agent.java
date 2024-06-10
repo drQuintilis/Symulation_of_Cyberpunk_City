@@ -2,6 +2,7 @@ package org.example.agents;
 
 import org.example.CitySquare;
 import org.example.Simulation;
+import org.example.TickSteps;
 import org.example.implants.Implant;
 
 public abstract class Agent {
@@ -18,21 +19,19 @@ public abstract class Agent {
         this.isDead = false;
     }
 
-//    public void doMovement() {}
     public void die(){
         this.isDead = true;
         this.currentSimulation.deRegisterAgent(this);
+        this.position.deregisterAgent(this);
     }
 
     public void confirmMove(CitySquare newPosition) {
         this.position = newPosition;
     };
 
-    private void doMovement() {
+    protected void doMovement() {}
 
-    }
-
-    public void doTick(){}
+    public void doTick(TickSteps step){}
 
     public String toString() {
         String dead;
