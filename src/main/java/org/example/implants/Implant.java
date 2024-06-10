@@ -15,7 +15,7 @@ public class Implant {
     }
 
     public void connectImplant(Citizen owner) throws IOException {
-        if (this.owner == null) this.owner = owner;
+        if (this.owner == null) this.owner = owner; //implant must know that he has owner
         else throw new IOException("Something happened");
     }
 

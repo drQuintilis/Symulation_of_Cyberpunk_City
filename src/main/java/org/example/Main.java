@@ -3,7 +3,7 @@ package org.example;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] linkageList = {
+        int[][] linkageList = { //graf = our City
                 {3, 5, 7, 9},
                 {4, 5, 7, 8},
                 {1, 5, 6, 9},

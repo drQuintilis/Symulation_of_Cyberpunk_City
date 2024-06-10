@@ -12,13 +12,13 @@ public class Inequality implements EconomicEntity {
         this.sigmaLog = sigmaLog;
         this.random = new Random();
     }
-    public Inequality(double muLog, double sigmaLog, long seed) {
-        this.muLog = muLog;
-        this.sigmaLog = sigmaLog;
-        this.random = new Random(seed);
-    }
-
-    public double getNextValue() { // получить слеующее рандомное значение по логонормальному распределению (одно)
+    //co to jest i czy my tego potzrebujemy?
+//    public Inequality(double muLog, double sigmaLog, long seed) {
+//        this.muLog = muLog;
+//        this.sigmaLog = sigmaLog;
+//        this.random = new Random(seed);
+//    }
+    public double getNextValue() { //returns next random value (log normal distribution)
         return Math.exp(this.random.nextGaussian(this.muLog, this.sigmaLog));
     }
 }

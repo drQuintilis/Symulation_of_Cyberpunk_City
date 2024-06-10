@@ -29,7 +29,8 @@ public class Citizen extends Agent {
         this.savedAmount += currentSimulation.getSalary().getNextValue() * this.incomeMultiplier;
     }
 
-    public void buyImplant(){
+
+    public void buyImplant(){ //processing buying and registering implant for citizen
         if (this.savedAmount == 0) return;
         Implant implant = currentSimulation.getMarket().buyImplant(this.savedAmount);
         if (this.riskStrategy.shouldIBuyImplant(this, implant)) {
@@ -63,7 +64,7 @@ public class Citizen extends Agent {
         return acctualNumberOfImplants;
     }
 
-    public void checkImplant(){
+    public void checkImplant(){ //"flipping a coin" for citizen. defines: crazy or not
         double sum = 0;
         double middleValue = 0;
 
@@ -72,7 +73,7 @@ public class Citizen extends Agent {
                 sum += implant.getProbOfFailReal();
             }
         }
-        middleValue = sum / getActualNumberOfImplants();
+        middleValue = sum / getActualNumberOfImplants(); //middle value of probOfFailReal in citizen's implants[]
         double i = (Math.random()*101);
         if(i <= middleValue) goCrazy();
         System.out.println("Random: " + i + " Middle Value: " + middleValue + " Result: " + (i <= middleValue));
