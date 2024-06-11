@@ -1,6 +1,6 @@
 package org.example;
 
-public enum TickSteps {
+public enum TickSteps { //kolejność wypełniania kroków ticka
     IMPLANT_STATUS_UPDATE,
     CYBER_PSYCHO_ATTACK,
     MOVEMENTS_REQUESTS,

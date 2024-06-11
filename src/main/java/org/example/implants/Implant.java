@@ -5,20 +5,21 @@ import org.example.agents.Citizen;
 import java.io.IOException;
 
 public class Implant {
-    private float probOfFail;
-    private float probOfFailReal;
+    private float probOfFail; // parametr wiadomy podczas zakupu, który wyznacza szansę zwariować się po wstawieniu implanta
+    private float probOfFailReal; // rzeczywisty parametr, który wskazuję na prawdziwą szansę, może być mniejsza lub większa
     private Citizen owner;
 
-    public Implant(float probOfFail, float probOfFailReal){
+    public Implant(float probOfFail, float probOfFailReal){ //konstruktor klasy Implant
         this.probOfFail = probOfFail;
         this.probOfFailReal = probOfFailReal;
     }
 
     public void connectImplant(Citizen owner) throws IOException {
-        if (this.owner == null) this.owner = owner; //implant must know that he has owner
+        if (this.owner == null) this.owner = owner; // implant się dowiaduje, że ma właściciela
         else throw new IOException("Something happened");
     }
 
+    // gettery
     public float getProbOfFailReal() {
         return probOfFailReal;
     }
