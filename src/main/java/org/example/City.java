@@ -13,10 +13,14 @@ public class City {
     private int[][][] optimalPaths;
 
     public City(int[][] linkageList){ // konstruktor #1
-        this(linkageList, new Random());
+        this(linkageList, new Random(), 15);
     }
 
-    public City(int[][] linkageList, Random random){ // konstruktor #2
+    public City(int[][] linkageList, int defaultThroughput){ // konstruktor #1
+        this(linkageList, new Random(), defaultThroughput);
+    }
+
+    public City(int[][] linkageList, Random random, int defaultThroughput){ // konstruktor #2
         this.random = random;
         this.citySquareList = new LinkedList<>();
         for (int i = 0; i < linkageList.length; i++) { // przekształcenie indeksów w linkageList na indeksację od 0
@@ -24,7 +28,7 @@ public class City {
                 linkageList[i][j]--;
             }
         }
-        this.generateCity(linkageList);
+        this.generateCity(linkageList, defaultThroughput);
         optimalPaths = new int[linkageList.length][linkageList.length][];  // inicjalizacja tablicy do przechowywania najkrótszych ścieżek
         for (int i = 0; i < linkageList.length; i++) {  // obliczanie najkrótszych ścieżek dla wszystkich par wierzchołków
             for (int j = 0; j < linkageList.length; j++) {
@@ -80,9 +84,9 @@ public class City {
         return retVal; // tablica reprezentująca ścieżkę od punktu początkowego do końcowego
     }
 
-    private void generateCity(int[][] linkageList) {
+    private void generateCity(int[][] linkageList, int defaultThroughput) {
         for (int i = 0; i < linkageList.length; i++) {  // iteracja przez wszystkie wierzchołki (dzielnicy) w linkageList
-            citySquareList.add(new CitySquare(i, linkageList.length));  // tworzenie nowego CitySquare dla każdego wierzchołka i dodawanie go do listy citySquareList
+            citySquareList.add(new CitySquare(i, linkageList.length, defaultThroughput));  // tworzenie nowego CitySquare dla każdego wierzchołka i dodawanie go do listy citySquareList
         }
         for (int i = 0; i < linkageList.length; i++) {
             CitySquare currentSqaure = citySquareList.get(i);  // pobieranie bieżącego wierzchołka z listy citySquareList

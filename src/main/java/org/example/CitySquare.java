@@ -12,7 +12,7 @@ public class CitySquare {
     private int throughput; // przepustowość dzielnicy
 
 
-    public CitySquare(Integer squareID, int citySize){ // konstruktor klasy CitySquare
+    public CitySquare(Integer squareID, int citySize, int throughput){ // konstruktor klasy CitySquare
         this.agentsOnThisSquare = new LinkedList<>();
         this.citySquareLinks = new ArrayList<>(citySize);
         for (int i = 0; i < citySize; i++) {
@@ -20,7 +20,7 @@ public class CitySquare {
         }
         this.squareID = squareID;
         this.movementRequests = new ArrayList<>();
-        this.throughput = 15;
+        this.throughput = throughput;
     }
 
     public void registerAgent(Agent agent){ // rejestracja nowego agenta w dzielnice

@@ -48,42 +48,80 @@ public class Simulation {
     };
 
     public Simulation(){ //konstruktor symulacji
-        this.random = new Random();
-        this.salary = new Salary(
+        this(
                 100,
-                40
-        );
-        this.inequality = new Inequality(
+                400,
                 10,
-                2
-        );
-        this.market = new ImplantMarket(
+                2,
                 20000,
                 0.7f,
-                20
+                20,
+                0.001f,
+                500,
+                100,
+                1000,
+                new int[][]{ //graf, czyli nasze miasto
+                        {3, 5, 7, 9},
+                        {4, 5, 7, 8},
+                        {1, 5, 6, 9},
+                        {2, 5, 6, 8},
+                        {1, 2, 3, 4, 6, 7},
+                        {3, 4, 5},
+                        {1, 2, 5},
+                        {2, 4},
+                        {1, 3}
+                },
+                15,
+                5,
+                10,
+                1000
+        );
+    }
+
+    public Simulation(
+            int salaryMu,
+            int salarySigma,
+            int inequalityMu,
+            int inequalitySigma,
+            int implantCostLevel,
+            float implantFailureDispersion,
+            float maxProbOfImplantFail,
+            float minProbOfImplantFail,
+            int maxtakIncome,
+            int maxtakSalary,
+            int maxtakHire,
+            int[][] cityLinkageList,
+            int squareThroughput,
+            int citizenSpawnRate,
+            int soloProcent,
+            int maxPopulation
+    ){ //konstruktor symulacji
+        this.random = new Random();
+        this.salary = new Salary(
+                salaryMu,
+                salarySigma
+        );
+        this.inequality = new Inequality(
+                inequalityMu,
+                inequalitySigma
+        );
+        this.market = new ImplantMarket(
+                implantCostLevel,
+                implantFailureDispersion,
+                maxProbOfImplantFail,
+                minProbOfImplantFail
         );
         this.maxtakCorp = new MaxtakCorp(
                 this,
-                300,
-                100,
-                1000
+                maxtakIncome,
+                maxtakSalary,
+                maxtakHire
         );
-        int[][] linkageList = { //graf, czyli nasze miasto
-                {3, 5, 7, 9},
-                {4, 5, 7, 8},
-                {1, 5, 6, 9},
-                {2, 5, 6, 8},
-                {1, 2, 3, 4, 6, 7},
-                {3, 4, 5},
-                {1, 2, 5},
-                {2, 4},
-                {1, 3}
-        };
-       this.city = new City(linkageList);
-       this.agents = new LinkedList<>();
-       this.citizenSpawnRate = 5;
-       this.soloProcent = 20;
-       this.maxPopulation = 1000;
+        this.city = new City(cityLinkageList, squareThroughput);
+        this.agents = new LinkedList<>();
+        this.citizenSpawnRate = citizenSpawnRate;
+        this.soloProcent = soloProcent;
+        this.maxPopulation = maxPopulation;
 
 
         for (int i = 0; i < this.maxPopulation; i++) {
