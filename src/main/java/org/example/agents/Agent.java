@@ -21,6 +21,7 @@ public abstract class Agent {
     }
 
     public void die(){
+        if (this.isDead) return;
         this.isDead = true; // agent umiera
         this.currentSimulation.deRegisterAgent(this); // usuwanie agenta z listy obecnych agentów w symulacji z powodu śmierci
         this.position.deregisterAgent(this); // usuwanie agenta z dzielnicy

@@ -18,6 +18,7 @@ public class MaxtakAgent extends Agent {
     }
 
     public void die(){  // dodatkowa funkcja śmierci, bo agent maxtak potrzebuje deregistracji jeszcze z maxtak corp
+        if (this.isDead) return;
         super.die();
         this.maxtakCorp.deregisterAgent(this);
     }

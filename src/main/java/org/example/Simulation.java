@@ -174,7 +174,13 @@ public class Simulation {
             }
         }
         // przez ograniczenie maksymalnej liczby mieszkańców, kiesy są wolne miejsca to tworzymy nowych citizenów
-        int populationDiff = this.maxPopulation - this.agents.size();
+        int currentPopulation = 0;
+        for (Agent agent:
+                this.agents
+        ){
+            if (agent instanceof Citizen) currentPopulation++;
+        }
+        int populationDiff = this.maxPopulation - currentPopulation;
         if (populationDiff > 0) {
             for (int i = 0; i < Math.min(citizenSpawnRate, populationDiff); i++) {
                 createNewCitizen();
