@@ -7,4 +7,5 @@ public enum TickSteps { //kolejność wypełniania kroków ticka
     MOVEMENTS_EXECUTION,
     MAXTAK_ATTACK,
     ECONOMICS_UPDATE,
+    INFORMATION_PRINT,
 }

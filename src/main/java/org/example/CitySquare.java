@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.agents.Agent;
-import org.example.agents.Citizen;
-import org.example.agents.CyberPsycho;
-import org.example.agents.MaxtakAgent;
+import org.example.agents.*;
 
 import java.util.*;
 
@@ -90,6 +87,7 @@ public class CitySquare {
 
     public void doTick(TickSteps step){
         if (step == TickSteps.MOVEMENTS_EXECUTION) doAgentMoves();
+        if (step == TickSteps.INFORMATION_PRINT) printSquareStats();
     }
 
     public CitySquare[] getCitySquareLinks() { // tworzymy tymczasową listę do przechowywania nie-nullowych połączeń dzielnic
@@ -115,6 +113,25 @@ public class CitySquare {
                 ",\n  citySquareLinks=" + arrayOfSquares +
                 ",\n  agentsOnThisSquare=" + agentsOnThisSquare +
                 "\n}\n";
+    }
+
+    public void printSquareStats() {
+        HashMap<Class, Integer> squareStats = new HashMap<>();
+        squareStats.put(Citizen.class, 0);
+        squareStats.put(Solo.class, 0);
+        squareStats.put(MaxtakAgent.class, 0);
+        squareStats.put(CyberPsycho.class, 0);
+        for (Agent agent :
+                this.agentsOnThisSquare) {
+            if (!squareStats.containsKey(agent.getClass())) squareStats.put(agent.getClass(), 1);
+            else squareStats.replace(agent.getClass(), squareStats.get(agent.getClass())+1);
+        }
+        System.out.println();
+        System.out.println("Square ID: " + this.squareID);
+        for (Map.Entry<Class, Integer> entry:
+             squareStats.entrySet()) {
+            System.out.println(entry.getKey().getSimpleName()+": "+entry.getValue());
+        }
     }
 
     public CyberPsycho getPsycho() {

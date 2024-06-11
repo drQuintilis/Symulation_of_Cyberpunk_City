@@ -39,6 +39,7 @@ public class Simulation {
             TickSteps.MOVEMENTS_EXECUTION,
             TickSteps.MAXTAK_ATTACK,
             TickSteps.ECONOMICS_UPDATE,
+            TickSteps.INFORMATION_PRINT,
     };
     private final RiskStrategy[] riskStrategies = {  // lista dla rozdzielenia wśród agentów randomowej strategii
             new HighRiskStrategyDefault(),
@@ -63,9 +64,9 @@ public class Simulation {
         );
         this.maxtakCorp = new MaxtakCorp(
                 this,
-                1000,
-                10,
-                100
+                300,
+                100,
+                1000
         );
         int[][] linkageList = { //graf, czyli nasze miasto
                 {3, 5, 7, 9},
@@ -82,10 +83,10 @@ public class Simulation {
        this.agents = new LinkedList<>();
        this.citizenSpawnRate = 5;
        this.soloProcent = 20;
-       this.maxPopulation = 200;
+       this.maxPopulation = 1000;
 
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < this.maxPopulation; i++) {
             createNewCitizen();
         }
     }

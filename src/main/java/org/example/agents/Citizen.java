@@ -98,7 +98,7 @@ public class Citizen extends Agent {
     protected void doMovement() {
         if (this.position.isPsychoHere()) { // citizen sprawdza, czy nie pojawił się na jego dzielnice psycho
             this.currentSimulation.getMaxtak().callThePolice(this.position.squareID); // jesli tak, to przekazuje tę informację do diału maxtak
-            System.out.println("Citizen ID: " + this.agentID + " encountered a psycho and called the police.");
+//            System.out.println("Citizen ID: " + this.agentID + " encountered a psycho and called the police.");
             CitySquare[] neighbourSquares = this.position.getCitySquareLinks();
             this.position.requestMovement(
                     this,
@@ -114,7 +114,7 @@ public class Citizen extends Agent {
                             (int) (Math.random() * neighbourSquares.length)
                             ].squareID
             );
-            System.out.println("Citizen ID: " + this.agentID + " decided to move to a new square.");
+//            System.out.println("Citizen ID: " + this.agentID + " decided to move to a new square.");
         }
     }
 

@@ -19,6 +19,10 @@ public class CyberPsycho extends Agent{
 
     public void attackEveryone(){ // określa, ile osób w dzielnice psycho może zaatakować
         Agent[] agentsOnThisSquare = this.position.getAttackableAgents();
+        if (agentsOnThisSquare.length == 0){
+            shouldIMove = true;
+            return;
+        }
         for (int i = 0; i < strength; i++) {
             agentsOnThisSquare[(int)(Math.random() * agentsOnThisSquare.length)].die(); // wybiera przypadkowo kilka osób (zależy od siły psycho), których zabije
         }

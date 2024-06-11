@@ -37,8 +37,8 @@ public class MaxtakCorp {
 
     public void doUpdateAgents(){
         for(int i = 0; ; i++){
-            if(this.savedAmount > this.costOfHireUnit && this.moneyFlow // jeśli zostaną się pieniądze, to korporacja zatrudnia nowych agentów
-                    > (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){ // uwaga: korporacja ma mieć pieniądze na kolejny tick, żeby wypłacić wszystkie pensji agentom
+            if(this.savedAmount >= this.costOfHireUnit && this.moneyFlow // jeśli zostaną się pieniądze, to korporacja zatrudnia nowych agentów
+                    >= (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){ // uwaga: korporacja ma mieć pieniądze na kolejny tick, żeby wypłacić wszystkie pensji agentom
                 MaxtakAgent newAgent = new MaxtakAgent(this.simulation, this.simulation.getRandomCitySqaureForAgent(), this.simulation.getAgentId()); // tworzenie nowego agenta maxtak
                 this.maxtakAgentList.add(newAgent);
                 this.savedAmount -= this.costOfHireUnit;
