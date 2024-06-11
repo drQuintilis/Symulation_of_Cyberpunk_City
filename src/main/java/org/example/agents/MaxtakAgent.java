@@ -23,23 +23,23 @@ public class MaxtakAgent extends Agent {
     }
 
     protected void doMovement() {
-        Integer[] activePsychoSquares = this.maxtakCorp.getActivePsychoSquares();
+        Integer[] activePsychoSquares = this.maxtakCorp.getActivePsychoSquares(); // pobieramy tablicę aktywnych dzielnic z psycho
         if (activePsychoSquares.length == 0) return;
-        int[] closestPsycho = null;
-        for (int i = 0; i < activePsychoSquares.length; i++) {
-            int[] path = this.currentSimulation.getCity().getShortestPath(this.position.squareID, activePsychoSquares[i]);
-            if (closestPsycho == null || path.length < closestPsycho.length) {
-                closestPsycho = path;
+        int[] closestPsycho = null; // zmienna do przechowywania najbliższej ścieżki do psycho
+        for (int i = 0; i < activePsychoSquares.length; i++) { // iteracja przez wszystkie aktywne dzielnice z psycho
+            int[] path = this.currentSimulation.getCity().getShortestPath(this.position.squareID, activePsychoSquares[i]); // pobieramy najkrótszą ścieżkę z obecnej pozycji do bieżącej dzielnicy z psycho
+            if (closestPsycho == null || path.length < closestPsycho.length) {  // sprawdzamy, czy bieżąca ścieżka jest krótsza niż najkrótsza dotychczas znaleziona
+                closestPsycho = path; // jeśli tak, aktualizujemy najbliższą ścieżkę do psycho
             }
         }
-        if (closestPsycho == null || closestPsycho.length == 0) {
-            if (!this.position.isPsychoHere()) this.maxtakCorp.deregisterCall(this.position.squareID);
+        if (closestPsycho == null || closestPsycho.length == 0) { // jeśli nie znaleziono ścieżki lub najbliższa ścieżka jest pusta
+            if (!this.position.isPsychoHere()) this.maxtakCorp.deregisterCall(this.position.squareID); // jeśli na obecnej pozycji nie ma psycho, anulujemy zgłoszenie
             return;
         }
-        this.position.requestMovement(this,closestPsycho[0]);
+        this.position.requestMovement(this,closestPsycho[0]); // Prośba o poruszaniu się do pierwszego wierzchołka w najbliższej ścieżce do psycho
     }
 
-    private void attackPsycho(){
+    private void attackPsycho(){ // maxtak agenty atakują psycho zawsze z wartością "-1" żeby można było ich odróżnić od ataku solo
         if (this.position.isPsychoHere()) {
             this.position.getPsycho().attack(-1);
         }
