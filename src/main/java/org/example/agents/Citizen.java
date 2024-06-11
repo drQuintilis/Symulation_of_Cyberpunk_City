@@ -8,14 +8,14 @@ import org.example.riskStrategies.RiskStrategy;
 import java.io.IOException;
 
 public class Citizen extends Agent {
-    private int targetImplantNumber;
-    private Implant[] implants;
-    private double incomeMultiplier;
-    private double savedAmount;
-    private int desireBuyImplantNow;
-    private RiskStrategy riskStrategy;
+    private int targetImplantNumber; // docelowa liczba implantów, którą chce mieć citizen
+    private Implant[] implants; // lista jego implantów
+    private double incomeMultiplier; // współczynnik odpowiadający za poziom bogactwa citizena (pensja co tick jest pomnożona przez ten współczynnik)
+    private double savedAmount; // portfel citizena
+    private int desireBuyImplantNow; // poziom chęci do kupienia implantu, ma wpływ na to żeby citizeny kupowali gorsze implanty
+    private RiskStrategy riskStrategy; // odpowiada za to, o ile citizen jest ryzykowny przy wyborze implantów (wzorzec programowania - strategia)
 
-    public Citizen(
+    public Citizen( // konstruktor citizena
             Simulation simulation,
             CitySquare citySquare,
             int agentID,
@@ -30,36 +30,31 @@ public class Citizen extends Agent {
         this.riskStrategy = riskStrategy;
     }
 
-    public void doIncomeUpdate() {
-        this.savedAmount += currentSimulation.getSalary().getNextValue() * this.incomeMultiplier;
-    }
-
-
-    public void buyImplant(){ //processing buying and registering implant for citizen
+    public void buyImplant(){ // proces kupienia i rejestracji implantu
         if (this.savedAmount == 0) return;
         Implant implant = currentSimulation.getMarket().buyImplant(this.savedAmount);
-        if (this.riskStrategy.shouldIBuyImplant(this, implant)) {
+        if (this.riskStrategy.shouldIBuyImplant(this, implant)) { // w zależności od wybranej strategii citizena on decyduje czy kupować implant
             try {
                 implant.connectImplant(this);
             } catch (IOException e) {
             }
             for (int i = 0; i < implants.length; i++) {
-                if (implants[i] == null) {
+                if (implants[i] == null) { //sprawdzamy, czy jest jeszcze wolne miejsce dla implantu licząc jego docelową liczbę implantów
                     implants[i] = implant;
                     break;
                 }
             }
-            this.desireBuyImplantNow = targetImplantNumber - getActualNumberOfImplants();
-            this.savedAmount = 0;
+            this.desireBuyImplantNow = targetImplantNumber - getActualNumberOfImplants(); // poziom chęci do kupienia nowego implantu zależy od ilości wolnych miejsc
+            this.savedAmount = 0; // citizen zawsze kupuje implant za całą kwotę, którą ma w portfelu obecnie
         }
         else {
             if (this.getActualNumberOfImplants() != this.targetImplantNumber) {
-                this.desireBuyImplantNow += 1;
+                this.desireBuyImplantNow += 1; // za każdym razem, gdy citizen nie kupuje implantu z powodu, że nie pasował mu, to wzrasta jego chęć do kupienia nowych implantów o 1
             }
         }
     }
 
-    public int getActualNumberOfImplants() {
+    public int getActualNumberOfImplants() { // dostajemy liczbę już ustawionych implantów, zajętych komórek
         int acctualNumberOfImplants = 0;
         for (Implant implant : implants) {
             if (implant != null) {
@@ -69,7 +64,7 @@ public class Citizen extends Agent {
         return acctualNumberOfImplants;
     }
 
-    public void checkImplant(){ //"flipping a coin" for citizen. defines: crazy or not
+    public void checkImplant(){ //"rzut monetą" dla citizena, definiuje, czy citizen zostanie cyberpsycho, czy nie
         double sum = 0;
         double middleValue = 0;
 
@@ -78,32 +73,32 @@ public class Citizen extends Agent {
                 sum += implant.getProbOfFailReal();
             }
         }
-        middleValue = sum / getActualNumberOfImplants(); //middle value of probOfFailReal in citizen's implants[]
+        middleValue = sum / getActualNumberOfImplants(); // średnia wartość probOfFailReal w liście implantów u citizena
         double i = (Math.random()*101);
-        if(i <= middleValue) goCrazy();
+        if(i <= middleValue) goCrazy(); // jeśli random jest mniejszy od średniej wartości szansy zwariować się napisanej na implantach, to zostaje sie cyberpsycho
         System.out.println("Random: " + i + " Middle Value: " + middleValue + " Result: " + (i <= middleValue));
     }
 
     public void doTick(TickSteps step){
         if(!this.isDead) {
-            if (step == TickSteps.IMPLANT_STATUS_UPDATE) checkImplant();
-            if (step == TickSteps.MOVEMENTS_REQUESTS) doMovement();
-            if (step == TickSteps.ECONOMICS_UPDATE) doEconomics();
+            if (step == TickSteps.IMPLANT_STATUS_UPDATE) checkImplant(); // tick, który sprawdza, czy implanty nie wymknęły się spod kontroli
+            if (step == TickSteps.MOVEMENTS_REQUESTS) doMovement(); // tick z prośbą od citizenów o poruszanie się do innej dzielnicy w grafie
+            if (step == TickSteps.ECONOMICS_UPDATE) doEconomics(); // tick, który nalicza pieniądze citizenowi
         }
     }
 
     protected void doMovement() {
-        if (this.position.isPsychoHere()) {
-            this.currentSimulation.getMaxtak().callThePolice(this.position.squareID);
+        if (this.position.isPsychoHere()) { // citizen sprawdza, czy nie pojawił się na jego dzielnice psycho
+            this.currentSimulation.getMaxtak().callThePolice(this.position.squareID); // jesli tak, to przekazuje tę informację do diału maxtak
             CitySquare[] neighbourSquares = this.position.getCitySquareLinks();
             this.position.requestMovement(
                     this,
-                    neighbourSquares[
+                    neighbourSquares[ //po czym ucieka na dowolną sąsiednią dzielnicę
                             (int)(Math.random()*neighbourSquares.length)
                     ].squareID
             );
         }
-        if (Math.random()*100 <= 20) {
+        if (Math.random()*100 <= 20) { // jeśli psycho nie ma, to z szansą 20%, citizen spaceruje do dowolnej sąsiedniej dzielnicy, albo zostaje się na miejscu
             CitySquare[] neighbourSquares = this.position.getCitySquareLinks();
             this.position.requestMovement(
                     this,
@@ -113,18 +108,18 @@ public class Citizen extends Agent {
             );
         }
     }
-    private void doEconomics() {
+    private void doEconomics() { //citizen dostaje pensje, pomnożoną przez współczynnik bogactwa
         this.savedAmount += this.currentSimulation.getSalary().getNextValue() * this.incomeMultiplier;
         buyImplant();
     }
 
     public void goCrazy(){
-        this.die();
-        new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants());//call constructor to create psycho
+        this.die(); // citizen umiera podczas transformacji do cyberpsycho
+        new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants()); // wywoła konstruktor z utworzeniem psycho w tym samym miejscu zamiast citizena
     }
 
     @Override
-    public String toString() {
+    public String toString() { // dane wyjściowe dla sprawdzenia informacji
         String arrayOfImplants = "";
         for(Implant implant: this.implants){
             if(implant != null){
@@ -141,6 +136,7 @@ public class Citizen extends Agent {
                 "Type of risk strategy: " + this.riskStrategy.getClass().getName();
     }
 
+    // gettery
     public boolean getIsDead() {
         return isDead;
     }

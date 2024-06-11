@@ -8,7 +8,7 @@ import org.example.maxtak.MaxtakCorp;
 public class MaxtakAgent extends Agent {
 
     private MaxtakCorp maxtakCorp;
-    public MaxtakAgent(
+    public MaxtakAgent( // konstruktor klasy maxtak agent
             Simulation simulation,
             CitySquare citySquare,
             int agentID
@@ -17,7 +17,7 @@ public class MaxtakAgent extends Agent {
         this.maxtakCorp = simulation.getMaxtak();
     }
 
-    public void die(){
+    public void die(){  // dodatkowa funkcja śmierci, bo agent maxtak potrzebuje deregistracji jeszcze z maxtak corp
         super.die();
         this.maxtakCorp.deregisterAgent(this);
     }

@@ -29,7 +29,7 @@ public class Simulation {
     private MaxtakCorp maxtakCorp;
     private int currentAgentId;
 
-    private final TickSteps[] stepOrder = {
+    private final TickSteps[] stepOrder = { //porządek, w którym robimy kroki symulacji
             TickSteps.IMPLANT_STATUS_UPDATE,
             TickSteps.CYBER_PSYCHO_ATTACK,
             TickSteps.MOVEMENTS_REQUESTS,
@@ -37,13 +37,13 @@ public class Simulation {
             TickSteps.MAXTAK_ATTACK,
             TickSteps.ECONOMICS_UPDATE,
     };
-    private final RiskStrategy[] riskStrategies = {
+    private final RiskStrategy[] riskStrategies = {  // lista dla rozdzielenia wśród agentów randomowej strategii
             new HighRiskStrategyDefault(),
             new MediumRiskStrategyDefault(),
             new LowRiskStrategyDefault(),
     };
 
-    public Simulation(){
+    public Simulation(){ //konstruktor symulacji
         this.random = new Random();
         this.salary = new Salary(
                 100,
@@ -80,7 +80,7 @@ public class Simulation {
 
        int citizenAmount = 100;
        int soloAmount = 10;
-        for (int i = 0; i < citizenAmount; i++) {
+        for (int i = 0; i < citizenAmount; i++) { // tworzenie citizenów z danymi parametrami
             new Citizen(
                     this,
                     city.getRandomCitySqaureForAgent(),
@@ -89,7 +89,7 @@ public class Simulation {
                     riskStrategies[random.nextInt(3)]
             );
         }
-        for (int i = 0; i < soloAmount; i++) {
+        for (int i = 0; i < soloAmount; i++) { // tworzenie solo z danymi parametrami
             new Solo(
                     this,
                     city.getRandomCitySqaureForAgent(),
@@ -113,7 +113,7 @@ public class Simulation {
 //    }
 
     public void doTick() {
-        for (TickSteps step:
+        for (TickSteps step:  // przechodzimy po liście enum z krokami
              stepOrder) {
             this.maxtakCorp.doTick(step);
             this.city.doTick(step);
@@ -124,15 +124,15 @@ public class Simulation {
         }
     }
 
-    public void registerAgent(Agent agent){
+    public void registerAgent(Agent agent){ // dodaje agenta na listę, jego tworzenie
         this.agents.add(agent);
     }
 
-    public void deRegisterAgent(Agent agent){ //"destruction"
+    public void deRegisterAgent(Agent agent){ // prawie jak "destruction", usuwa agenta z listy, jego "śmierć"
         this.agents.remove(agent);
     }
 
-
+        //getters
     public ImplantMarket getMarket() {
         return market;
     }
@@ -157,7 +157,8 @@ public class Simulation {
         this.currentAgentId++;
         return this.currentAgentId;
     }
-    public CitySquare getRandomCitySqaureForAgent() {
+
+    public CitySquare getRandomCitySqaureForAgent() {  //wybiera randomową dzielnice dla utworzenia agenta
         CitySquare[] citySquares = city.getCitySquareList();
         return citySquares[random.nextInt(citySquares.length)];
     }

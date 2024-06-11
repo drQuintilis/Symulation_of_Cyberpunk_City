@@ -53,10 +53,10 @@ public class CitySquare {
 
     public Agent[] getAttackableAgents() {
         List<Agent> attackableAgents = new ArrayList<Agent>();
-        for (Agent agent: this.agentsOnThisSquare) {
+        for (Agent agent: this.agentsOnThisSquare) { // sprawdzamy, czy pewny agent jest intencją klasy citizen (czyli czy jest w ogóle citizenem?)
             if (agent instanceof Citizen) attackableAgents.add(agent);
-        }
-        Agent[] retVal = new Agent[attackableAgents.size()];
+        } // jeśli tak, to dodajemy go na listę potencjalnych agentów do ataku
+        Agent[] retVal = new Agent[attackableAgents.size()]; // przerobienie listy agentów do tablicy
         attackableAgents.toArray(retVal);
         return retVal;
     }
