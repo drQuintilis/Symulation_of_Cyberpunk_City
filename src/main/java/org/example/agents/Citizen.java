@@ -127,7 +127,7 @@ public class Citizen extends Agent {
 
     public void goCrazy(){
         this.die(); // citizen umiera podczas transformacji do cyberpsycho
-        new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants()); // wywoła konstruktor z utworzeniem psycho w tym samym miejscu zamiast citizena
+        CyberPsycho newCP = new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants()); // wywoła konstruktor z utworzeniem psycho w tym samym miejscu zamiast citizena
         System.out.println("Citizen ID: " + this.agentID + " went crazy on square: " + newCP.getSquareId());
     }
 
