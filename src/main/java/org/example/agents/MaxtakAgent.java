@@ -24,6 +24,7 @@ public class MaxtakAgent extends Agent {
 
     protected void doMovement() {
         Integer[] activePsychoSquares = this.maxtakCorp.getActivePsychoSquares();
+        if (activePsychoSquares.length == 0) return;
         int[] closestPsycho = null;
         for (int i = 0; i < activePsychoSquares.length; i++) {
             int[] path = this.currentSimulation.getCity().getShortestPath(this.position.squareID, activePsychoSquares[i]);
@@ -31,7 +32,10 @@ public class MaxtakAgent extends Agent {
                 closestPsycho = path;
             }
         }
-        if (closestPsycho == null || closestPsycho.length == 0) return;
+        if (closestPsycho == null || closestPsycho.length == 0) {
+            if (!this.position.isPsychoHere()) this.maxtakCorp.deregisterCall(this.position.squareID);
+            return;
+        }
         this.position.requestMovement(this,closestPsycho[0]);
     }
 

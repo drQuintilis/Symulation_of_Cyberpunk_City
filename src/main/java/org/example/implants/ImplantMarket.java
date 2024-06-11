@@ -28,7 +28,6 @@ public class ImplantMarket {
         float countProbOfFailReal = (float) (countProbOfFail * this.random.nextGaussian(1, this.implantFailureDispersion));
         countProbOfFailReal = Math.clamp(countProbOfFailReal, 0.0001f, 20); //Limit the ProbOfFail
         Implant implant = new Implant(countProbOfFail, countProbOfFailReal); //creating new implant
-        System.out.println(implant.toString());
         return implant;
     }
 }

@@ -14,6 +14,7 @@ public abstract class Agent {
     public Agent(int agentID, Simulation currentSimulation, CitySquare citySquare){ // konstruktor klasy agent
         this.agentID = agentID;
         this.position = citySquare;
+        this.position.registerAgent(this);
         this.currentSimulation = currentSimulation;
         this.currentSimulation.registerAgent(this);
         this.isDead = false;
@@ -23,6 +24,7 @@ public abstract class Agent {
         this.isDead = true; // agent umiera
         this.currentSimulation.deRegisterAgent(this); // usuwanie agenta z listy obecnych agentów w symulacji z powodu śmierci
         this.position.deregisterAgent(this); // usuwanie agenta z dzielnicy
+        System.out.println(this.getClass().getSimpleName()+ " ID: " + this.agentID + " has died and been deregistered from the simulation and position.");
     }
 
     public void confirmMove(CitySquare newPosition) {
@@ -38,5 +40,9 @@ public abstract class Agent {
         if(isDead) dead = "is dead";
         else dead = "is not dead";
         return "Agent ID: " + this.agentID + " " + dead;
+    }
+
+    public int getSquareId() {
+        return this.position.squareID;
     }
 }

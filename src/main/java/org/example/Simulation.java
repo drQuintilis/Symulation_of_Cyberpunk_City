@@ -28,6 +28,9 @@ public class Simulation {
     private City city;
     private MaxtakCorp maxtakCorp;
     private int currentAgentId;
+    private int maxPopulation;
+    private int citizenSpawnRate;
+    private int soloProcent;
 
     private final TickSteps[] stepOrder = { //porządek, w którym robimy kroki symulacji
             TickSteps.IMPLANT_STATUS_UPDATE,
@@ -77,11 +80,28 @@ public class Simulation {
         };
        this.city = new City(linkageList);
        this.agents = new LinkedList<Agent>();
+       this.citizenSpawnRate = 5;
+       this.soloProcent = 20;
+       this.maxPopulation = 200;
 
-       int citizenAmount = 100;
-       int soloAmount = 10;
-        for (int i = 0; i < citizenAmount; i++) { // tworzenie citizenów z danymi parametrami
-            new Citizen(
+
+        for (int i = 0; i < 200; i++) { // tworzenie citizenów z danymi parametrami
+            createNewCitizen();
+        }
+    }
+
+    private void createNewCitizen() {
+        Agent currentCitizen;
+        if (random.nextInt(100) > soloProcent) {
+            currentCitizen = new Citizen(
+                    this,
+                    city.getRandomCitySqaureForAgent(),
+                    this.getAgentId(),
+                    random.nextInt(15) + 1,
+                    riskStrategies[random.nextInt(3)]
+            );
+        } else {
+            currentCitizen = new Solo( // tworzenie solo z danymi parametrami
                     this,
                     city.getRandomCitySqaureForAgent(),
                     this.getAgentId(),
@@ -89,15 +109,7 @@ public class Simulation {
                     riskStrategies[random.nextInt(3)]
             );
         }
-        for (int i = 0; i < soloAmount; i++) { // tworzenie solo z danymi parametrami
-            new Solo(
-                    this,
-                    city.getRandomCitySqaureForAgent(),
-                    this.getAgentId(),
-                    random.nextInt(15) + 1,
-                    riskStrategies[random.nextInt(3)]
-            );
-        }
+        System.out.println("Created new "+currentCitizen.getClass().getSimpleName()+" with ID: " + currentCitizen.agentID + " on square: " + currentCitizen.getSquareId());
     }
 
 //    public Simulation(int citizenAmount){
@@ -120,6 +132,12 @@ public class Simulation {
             for (Agent agent:
                  this.agents.toArray(new Agent[0])) {
                 agent.doTick(step);
+            }
+        }
+        int populationDiff = this.maxPopulation - this.agents.size();
+        if (populationDiff > 0) {
+            for (int i = 0; i < Math.min(citizenSpawnRate, populationDiff); i++) {
+                createNewCitizen();
             }
         }
     }

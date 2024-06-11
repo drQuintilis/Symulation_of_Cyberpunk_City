@@ -35,7 +35,7 @@ public class CitySquare {
     }
 
     public void deregisterAgent(Agent agent){
-        if (agentsOnThisSquare.contains(agent)) return;
+        if (!agentsOnThisSquare.contains(agent)) return;
         this.agentsOnThisSquare.remove(agent);
     }
 
@@ -55,6 +55,7 @@ public class CitySquare {
         List<Agent> attackableAgents = new ArrayList<Agent>();
         for (Agent agent: this.agentsOnThisSquare) { // sprawdzamy, czy pewny agent jest intencją klasy citizen (czyli czy jest w ogóle citizenem?)
             if (agent instanceof Citizen) attackableAgents.add(agent);
+            if (agent instanceof MaxtakAgent) attackableAgents.add(agent);
         } // jeśli tak, to dodajemy go na listę potencjalnych agentów do ataku
         Agent[] retVal = new Agent[attackableAgents.size()]; // przerobienie listy agentów do tablicy
         attackableAgents.toArray(retVal);

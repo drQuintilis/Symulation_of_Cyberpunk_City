@@ -48,7 +48,7 @@ public class CyberPsycho extends Agent{
         if (this.isDead) return; // jeśli psycho umiera to nic się nie dzieje
         if (attStrength == -1 ) damage++; // maxtak zawsze robi damage o 1
         else damage+= (int) (attStrength/strength); // solo robi damage o sile = ilości jego aktualnych implantów, podzieloną przez siłę psycho
-        if (damage > strength) this.die(); // jeśli damage jest większy od siły psycho, co w tym przypadku także jest HP, to psycho umiera
+        if (damage >= strength) this.die(); // jeśli damage jest większy od siły psycho, co w tym przypadku także jest HP, to psycho umiera
     }
 
     public void doTick(TickSteps step){

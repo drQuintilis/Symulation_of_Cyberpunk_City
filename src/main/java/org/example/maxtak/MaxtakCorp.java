@@ -32,14 +32,17 @@ public class MaxtakCorp {
     public void doIncomeUpdate() {
         this.savedAmount += this.moneyFlow;
         this.savedAmount -= this.costOfActiveUnit * this.maxtakAgentList.size();
+        System.out.println("Maxtak Corp get " + this.moneyFlow + " of income and paid "+ this.costOfActiveUnit * this.maxtakAgentList.size()+ " of salary. Left " + this.savedAmount);
     }
 
     public void doUpdateAgents(){
         for(int i = 0; ; i++){
             if(this.savedAmount > this.costOfHireUnit && this.moneyFlow
                     > (this.costOfActiveUnit * (this.maxtakAgentList.size() + 1))){
-                this.maxtakAgentList.add(new MaxtakAgent(this.simulation, this.simulation.getRandomCitySqaureForAgent(), this.simulation.getAgentId()));
+                MaxtakAgent newAgent = new MaxtakAgent(this.simulation, this.simulation.getRandomCitySqaureForAgent(), this.simulation.getAgentId());
+                this.maxtakAgentList.add(newAgent);
                 this.savedAmount -= this.costOfHireUnit;
+                System.out.println("Created new MaxtakAgent with ID:" + newAgent.agentID + " on square: " + newAgent.getSquareId());
             } else break;
         }
     }
@@ -47,6 +50,7 @@ public class MaxtakCorp {
     public void callThePolice(int squareId) {
         if (!this.activePsychoSquares.contains(squareId)) {
             this.activePsychoSquares.add(squareId);
+            System.out.println("Maxtak Corp received call on: " + squareId);
         }
     }
 
@@ -79,5 +83,12 @@ public class MaxtakCorp {
                 "Cost of hire unit: " + this.costOfHireUnit +"\n" +
                 "Saved amount: " + this.savedAmount + "\n" +
                 "Array of Maxtak agents: " + arrayOfMaxtakAgents;
+    }
+
+    public void deregisterCall(int squareID) {
+        if (this.activePsychoSquares.contains(squareID)) {
+            this.activePsychoSquares.remove((Integer)squareID);
+            System.out.println("Maxtak Corp deregister call on: " + squareID);
+        }
     }
 }
