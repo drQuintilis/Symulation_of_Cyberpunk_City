@@ -67,7 +67,7 @@ public class Simulation {
                 10,
                 100
         );
-        int[][] linkageList = { //graf = our City
+        int[][] linkageList = { //graf, czyli nasze miasto
                 {3, 5, 7, 9},
                 {4, 5, 7, 8},
                 {1, 5, 6, 9},
@@ -79,21 +79,21 @@ public class Simulation {
                 {1, 3}
         };
        this.city = new City(linkageList);
-       this.agents = new LinkedList<Agent>();
+       this.agents = new LinkedList<>();
        this.citizenSpawnRate = 5;
        this.soloProcent = 20;
        this.maxPopulation = 200;
 
 
-        for (int i = 0; i < 200; i++) { // tworzenie citizenów z danymi parametrami
+        for (int i = 0; i < 200; i++) {
             createNewCitizen();
         }
     }
 
     private void createNewCitizen() {
         Agent currentCitizen;
-        if (random.nextInt(100) > soloProcent) {
-            currentCitizen = new Citizen(
+        if (random.nextInt(100) > soloProcent) { // tworzymy pewny procent solo agentów od całej liczby mieszkańców w mieście
+            currentCitizen = new Citizen( // tworzenie citizena z danymi parametrami
                     this,
                     city.getRandomCitySqaureForAgent(),
                     this.getAgentId(),
@@ -134,6 +134,7 @@ public class Simulation {
                 agent.doTick(step);
             }
         }
+        // przez ograniczenie maksymalnej liczby mieszkańców, kiesy są wolne miejsca to tworzymy nowych citizenów
         int populationDiff = this.maxPopulation - this.agents.size();
         if (populationDiff > 0) {
             for (int i = 0; i < Math.min(citizenSpawnRate, populationDiff); i++) {
@@ -142,6 +143,7 @@ public class Simulation {
         }
     }
 
+    //rejestracja i usunięcie agentów
     public void registerAgent(Agent agent){ // dodaje agenta na listę, jego tworzenie
         this.agents.add(agent);
     }
@@ -150,7 +152,7 @@ public class Simulation {
         this.agents.remove(agent);
     }
 
-        //getters
+    //gettery
     public ImplantMarket getMarket() {
         return market;
     }
