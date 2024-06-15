@@ -12,14 +12,24 @@ public class City {
 
     private int[][][] optimalPaths;
 
-    public City(int[][] linkageList){ // konstruktor #1
-        this(linkageList, new Random(), 15);
-    }
 
+    /**
+     * konstruktor 1 klasy City
+     * <p>
+     * @param linkageList list zawierający wierzchołki grafu
+     * @param defaultThroughput przepustowość agentów do innych dzielnic
+     */
     public City(int[][] linkageList, int defaultThroughput){ // konstruktor #1
         this(linkageList, new Random(), defaultThroughput);
     }
 
+    /**
+     * konstruktor 2 klasy City
+     * <p>
+     * @param linkageList list zawierający wierzchołki grafu
+     * @param random dla wyboru randomowych agentów dla przenoszenia się do innej dzielnicy
+     * @param defaultThroughput przepustowość agentów do innych dzielnic
+     */
     public City(int[][] linkageList, Random random, int defaultThroughput){ // konstruktor #2
         this.random = random;
         this.citySquareList = new LinkedList<>();
@@ -37,6 +47,19 @@ public class City {
         }
     }
 
+    /**
+     * Funkcja findShortestPath zawiera tablicę do śledzenia odwiedzonych wierzchołków
+     * i tablicę do przechowywania poprzednich wierzchołków w ścieżce.
+     * Korzysta z metody poszukiwania wszerz, czyli dodanie punktu początkowego do kolejki i oznaczenie go jako odwiedzonego,
+     * przejście przez wszystkich sąsiadów bieżącego wierzchołka oraz zaznaczenie wierzchołków jako odwiedzonych
+     * i zapisywanie bieżącego wierzchołka jako poprzednika sąsiada. W razie gdy sąsiad jest wierzchołkiem końcowym,
+     * to funkcja zwraca najkrótszą ścieżkę z danymi parametrami.
+     * <p>
+     * @param linkageList list zawierający wierzchołki grafu
+     * @param start punkt początkowy
+     * @param end punkt końcowy
+     * @return zwracamy funkcje, która buduje i zwraca najkrótszą ścieżkę z danymi parametrami
+     */
     private static int[] findShortestPath(int[][] linkageList, int start, int end) {
         if (start == end) { // jeśli punkt początkowy i końcowy są takie same, to zwraca pustą tablicę
             return new int[0];
@@ -71,6 +94,16 @@ public class City {
         return new int[0]; // ścieżka nie była znaleziona
     }
 
+    /**
+     * Funkcja buildPath buduje ścieżkę od końca do początku, idąc wstecz od wierzchołka końcowego
+     * do wierzchołka początkowego oraz tworzy tablicę wynikową o jeden mniejszą od rozmiaru listy ścieżki
+     * (pomijając punkt początkowy).
+     *
+     * @param previous tablica do przechowywania poprzednich wierzchołków w ścieżce
+     * @param start punkt początkowy
+     * @param end punkt końcowy
+     * @return tablica reprezentująca ścieżkę od punktu początkowego do końcowego
+     */
     private static int[] buildPath(int[] previous, int start, int end) {
         List<Integer> path = new ArrayList<>(); // tworzymy listę do przechowywania ścieżki
         for (int at = end; at != -1; at = previous[at]) { // budujemy ścieżkę od końca do początku, idąc wstecz od wierzchołka końcowego do wierzchołka początkowego
@@ -84,6 +117,13 @@ public class City {
         return retVal; // tablica reprezentująca ścieżkę od punktu początkowego do końcowego
     }
 
+    /**
+     * Funkcja generateCity tworzy nowy CitySquare dla każdego wierzchołka i dodaje go do listy citySquareList
+     * oraz łączy bieżący wierzchołek z sąsiadującymi wierzchołkami.
+     *
+     * @param linkageList list zawierający wierzchołki grafu
+     * @param defaultThroughput przepustowość agentów do innych dzielnic
+     */
     private void generateCity(int[][] linkageList, int defaultThroughput) {
         for (int i = 0; i < linkageList.length; i++) {  // iteracja przez wszystkie wierzchołki (dzielnicy) w linkageList
             citySquareList.add(new CitySquare(i, linkageList.length, defaultThroughput));  // tworzenie nowego CitySquare dla każdego wierzchołka i dodawanie go do listy citySquareList
@@ -96,11 +136,23 @@ public class City {
         }
     }
 
+    /**
+     * Getter zwracający tablice najkrótszej ścieżki
+     *
+     * @param start punkt początkowy
+     * @param end punkt końcowy
+     * @return tablica najkrótszej ścieżki
+     */
     // gettery
     public int[] getShortestPath(int start, int end) {
         return this.optimalPaths[start][end];
     } // dostajemy tablice najkrótszej ścieżki
 
+    /**
+     * Funkcja doTick wykonywa krok symulacji
+     *
+     * @param step bieżący krok wypełnienia działań w ciągu jednego ticku
+     */
     public void doTick(TickSteps step){
         for (CitySquare citySquare:
              this.citySquareList) {
@@ -108,14 +160,23 @@ public class City {
         }
     }
 
+    /**
+     * @return getter dla zwracania listy dzielnic miasta
+     */
     public CitySquare[] getCitySquareList() {
         return citySquareList.toArray(new CitySquare[0]);
     }
 
+    /**
+     * @return getter dla zwracania randomowej dzielnicy, żeby tam utworzyć agenta
+     */
     public CitySquare getRandomCitySqaureForAgent() { // otrzymujemy randomową dzielnice, żeby tam utworzyć agenta
         return citySquareList.get(random.nextInt(citySquareList.size()));
     }
 
+    /**
+     * @return wyświetlanie informacji tekstowych
+     */
     @Override
     public String toString() {
         StringBuilder arrayOfSquares = new StringBuilder();

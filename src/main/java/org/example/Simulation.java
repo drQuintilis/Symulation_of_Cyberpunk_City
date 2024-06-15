@@ -47,7 +47,10 @@ public class Simulation {
             new LowRiskStrategyDefault(),
     };
 
-    public Simulation(){ //konstruktor symulacji
+    /**
+     * Konstruktor symulacji podstawowy
+     */
+    public Simulation(){
         this(
                 100,
                 400,
@@ -78,6 +81,26 @@ public class Simulation {
         );
     }
 
+    /**
+     * Konstruktor symulacji z podanymi parametrami
+     *
+     * @param salaryMu                 Średnia pensji Citizena.
+     * @param salarySigma              Odchylenie standardowe pensji Citizena.
+     * @param inequalityMu             Parametr rozkładu: wartość średnia (przesuwa dzwon wartości wzdłuż osi OX)
+     * @param inequalitySigma          Parametr rozkładu: odchylenie standardowe (szerokość dzwonka wartości)
+     * @param implantCostLevel         Poziom kosztów implantów.
+     * @param implantFailureDispersion Rozrzut awarii implantów.
+     * @param maxProbOfImplantFail     Maksymalne prawdopodobieństwo awarii implantu.
+     * @param minProbOfImplantFail     Minimalne prawdopodobieństwo awarii implantu.
+     * @param maxtakIncome             Dochód MaxtakCorp.
+     * @param maxtakSalary             Pensja jednego agenta MaxtakCorp.
+     * @param maxtakHire               Koszt zatrudnienia nowego agenta MaxtakCorp.
+     * @param cityLinkageList          Lista połączeń dzielnic w mieście.
+     * @param squareThroughput         Przepustowość dzielnicy.
+     * @param citizenSpawnRate         Współczynnik pojawiania się nowych obywateli.
+     * @param soloProcent              Procent agentów typu Solo od całej populacji.
+     * @param maxPopulation            Maksymalna populacja miasta.
+     */
     public Simulation(
             int salaryMu,
             int salarySigma,
@@ -129,6 +152,15 @@ public class Simulation {
         }
     }
 
+    /**
+     * Tworzy nowego obywatela lub agenta typu Solo i dodaje go do symulacji.
+     * <p>
+     * Ta metoda losowo decyduje, czy nowy agent będzie obywatelem (Citizen) czy agentem typu Solo,
+     * na podstawie zadanego procentu agentów typu Solo (soloProcent). <p>
+     * Dla każdego nowego agenta losowane są odpowiednie parametry, takie jak lokalizacja w mieście,
+     * unikalny identyfikator, poziom ryzyka oraz strategia ryzyka. <p>
+     * Po stworzeniu, agent jest dodawany do symulacji i wypisywana jest informacja o jego ID oraz lokalizacji.
+     */
     private void createNewCitizen() {
         Agent currentCitizen;
         if (random.nextInt(100) > soloProcent) { // tworzymy pewny procent solo agentów od całej liczby mieszkańców w mieście
@@ -151,18 +183,18 @@ public class Simulation {
         System.out.println("Created new "+currentCitizen.getClass().getSimpleName()+" with ID: " + currentCitizen.agentID + " on square: " + currentCitizen.getSquareId());
     }
 
-//    public Simulation(int citizenAmount){
-//        this.salary = new Salary(100, 40);
-//        this.inequality = new Inequality(1,3);
-//        GenerateTargetImplantNumber targetImplantNumber = new GenerateTargetImplantNumber();
-//        this.agents = new ArrayList<Agent>();
-//        this.market = new ImplantMarket(20000, 0.7f, 20);
-//        for(int i = 0; i < citizenAmount; i++){
-//            new Citizen(this, city.citySquareList.get(0), i, targetImplantNumber.GenerateData(),
-//                    this.inequality.getNextValue(), new HighRiskStrategyDefault());
-//        }
-//    }
 
+    /**
+     * Wykonuje jeden cykl symulacji.
+     * <p>
+     * Ta metoda przechodzi przez listę kroków (stepOrder) zdefiniowaną przez enum TickSteps i wykonuje działania
+     * dla każdej z tych kroków dla korporacji MaxtakCorp, miasta oraz wszystkich agentów.
+     * <p>
+     * Po wykonaniu kroków, metoda sprawdza aktualną populację obywateli (Citizen) w symulacji.
+     * Jeśli liczba obywateli jest mniejsza od maksymalnej populacji (maxPopulation), tworzy nowych obywateli
+     * w ilości zależnej od współczynnika pojawiania się obywateli (citizenSpawnRate) oraz różnicy między
+     * maksymalną populacją a aktualną liczbą obywateli.
+     */
     public void doTick() {
         for (TickSteps step:  // przechodzimy po liście enum z krokami
              stepOrder) {
@@ -188,41 +220,74 @@ public class Simulation {
         }
     }
 
-    //rejestracja i usunięcie agentów
+    /**
+     * Ta metoda rejestruje nowego agenta, dodając go do listy agentów w symulacji.
+     *
+     * @param agent Agent, który ma zostać dodany do listy.
+     */
     public void registerAgent(Agent agent){ // dodaje agenta na listę, jego tworzenie
         this.agents.add(agent);
     }
 
+    /**
+     * Ta metoda wyrejestrowuje agenta, usuwając go z listy agentów w symulacji.
+     *
+     * @param agent Agent, który ma zostać usunięty z listy.
+     */
     public void deRegisterAgent(Agent agent){ // prawie jak "destruction", usuwa agenta z listy, jego "śmierć"
         this.agents.remove(agent);
     }
 
+    /**
+     * @return getter obiektu ImplantMarketu
+     */
     //gettery
     public ImplantMarket getMarket() {
         return market;
     }
 
+    /**
+     * @return getter parametru Salary
+     */
     public Salary getSalary() {
         return salary;
     }
 
+    /**
+     * @return getter parametru Inequality
+     */
     public Inequality getInequality() {
         return inequality;
     }
 
+    /**
+     * @return getter obiektu MaxtakCorp
+     */
     public MaxtakCorp getMaxtak() {
         return maxtakCorp;
     }
 
+    /**
+     * @return getter obiektu City
+     */
     public City getCity() {
         return city;
     }
 
+    /**
+     * @return getter identyfikatora agenta
+     */
     public int getAgentId() {
         this.currentAgentId++;
         return this.currentAgentId;
     }
 
+    /**
+     * Getter, zwracający losową dzielnicę (CitySquare) z listy dzielnic w mieście,
+     * która może być użyta do utworzenia nowego agenta.
+     *
+     * @return Losowa dzielnica (CitySquare) do utworzenia agenta.
+     */
     public CitySquare getRandomCitySqaureForAgent() {  //wybiera randomową dzielnice dla utworzenia agenta
         CitySquare[] citySquares = city.getCitySquareList();
         return citySquares[random.nextInt(citySquares.length)];
