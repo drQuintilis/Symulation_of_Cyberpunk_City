@@ -15,6 +15,14 @@ public class Citizen extends Agent {
     private int desireBuyImplantNow; // poziom chęci do kupienia implantu, ma wpływ na to żeby citizeny kupowali gorsze implanty
     private RiskStrategy riskStrategy; // odpowiada za to, o ile citizen jest ryzykowny przy wyborze implantów (wzorzec programowania - strategia)
 
+    /**
+     * konstruktor klasy
+     * @param simulation aktywna symulacja
+     * @param citySquare klasa dzielnicy planszy
+     * @param agentID numer agenta
+     * @param targetImplantNumber celow ilość implantów u citizena
+     * @param riskStrategy jaką strategię kupowania implantów ma citizen
+     */
     public Citizen( // konstruktor citizena
             Simulation simulation,
             CitySquare citySquare,
@@ -31,6 +39,17 @@ public class Citizen extends Agent {
         System.out.println("Citizen ID: " + this.agentID + " created with target implant number: " + this.targetImplantNumber);
     }
 
+    /**
+     * Metoda buyImplant() przeprowadza proces zakupu i rejestracji implantu.
+     *
+     * Ta metoda sprawdza, czy agent ma wystarczającą ilość zaoszczędzonych środków
+     * na zakup implantu. Jeśli tak, próbuje kupić implant z rynku i decyduje,
+     * czy implant powinien zostać kupiony na podstawie strategii ryzyka agenta.
+     * Jeśli implant zostanie kupiony, jest on podłączany do agenta i rejestrowany
+     * w tablicy implantów.
+     *
+     * @throws IOException jeśli podłączenie implantu nie powiedzie się.
+     */
     public void buyImplant(){ // proces kupienia i rejestracji implantu
         if (this.savedAmount == 0) return;
         Implant implant = currentSimulation.getMarket().buyImplant(this.savedAmount);
@@ -58,6 +77,13 @@ public class Citizen extends Agent {
         }
     }
 
+    /**
+     * Zwraca aktualną liczbę zainstalowanych implantów.
+     *
+     * Ta metoda przeszukuje tablicę implantów agenta i liczy, ile z nich jest zainstalowanych.
+     *
+     * @return liczba zainstalowanych implantów jako wartość całkowita.
+     */
     public int getActualNumberOfImplants() { // dostajemy liczbę już ustawionych implantów, zajętych komórek
         int actualNumberOfImplants = 0;
         for (Implant implant : implants) {
@@ -68,6 +94,16 @@ public class Citizen extends Agent {
         return actualNumberOfImplants;
     }
 
+    /**
+     * Sprawdza, czy agent stanie się cyberpsychopatą.
+     *
+     * Ta metoda oblicza średnią wartość prawdopodobieństwa awarii implantów
+     * agenta i na jej podstawie losowo decyduje, czy agent stanie się cyberpsychopatą.
+     * Jest to symulowane poprzez "rzut monetą".
+     *
+     * Jeśli średnia wartość prawdopodobieństwa awarii implantów jest większa
+     * niż losowa liczba, agent staje się cyberpsychopatą, wywołując metodę `goCrazy()`.
+     */
     public void checkImplant() { //"rzut monetą" dla citizena, definiuje, czy citizen zostanie cyberpsycho, czy nie
         double sum = 0;
         double middleValue = 0;
@@ -87,6 +123,10 @@ public class Citizen extends Agent {
         }
     }
 
+    /**
+     * Wykonuje pojedynczy krok symulacji dla Citizena na podstawie etapu kroku.
+     * @param step Etap kroku symulacji określony przez enum TickSteps.
+     */
     public void doTick(TickSteps step) {
         if (!this.isDead) {
             if (step == TickSteps.IMPLANT_STATUS_UPDATE) checkImplant(); // tick, który sprawdza, czy implanty nie wymknęły się spod kontroli
@@ -95,6 +135,14 @@ public class Citizen extends Agent {
         }
     }
 
+    /**
+     * Wykonuje ruch agenta do innej dzielnicy.
+     *
+     * Ta metoda sprawdza, czy w aktualnej dzielnicy agenta znajduje się cyberpsychopata.
+     * Jeśli tak, agent informuje o tym Maxtak i ucieka do losowej sąsiedniej dzielnicy.
+     * Jeśli nie ma cyberpsychopaty, agent ma 20% szans na przemieszczenie się do losowej
+     * sąsiedniej dzielnicy, w przeciwnym razie pozostaje na miejscu.
+     */
     protected void doMovement() {
         if (this.position.isPsychoHere()) { // citizen sprawdza, czy nie pojawił się na jego dzielnice psycho
             this.currentSimulation.getMaxtak().callThePolice(this.position.squareID); // jesli tak, to przekazuje tę informację do diału maxtak
@@ -118,6 +166,11 @@ public class Citizen extends Agent {
         }
     }
 
+    /**
+     * Ta metoda oblicza wypłatę dla agenta na podstawie następnej wartości pensji z symulacji
+     * i współczynnika dochodów agenta. Następnie dodaje tę kwotę do zaoszczędzonych środków agenta.
+     * Po przyznaniu wypłaty metoda automatycznie inicjuje proces zakupu implantu.
+     */
     private void doEconomics() { //citizen dostaje pensje, pomnożoną przez współczynnik bogactwa
         double payment = this.currentSimulation.getSalary().getNextValue() * this.incomeMultiplier;
         this.savedAmount += payment;
@@ -125,12 +178,19 @@ public class Citizen extends Agent {
         buyImplant();
     }
 
+    /**
+     *Przekształca agenta w cyberpsycho
+     */
     public void goCrazy(){
         this.die(); // citizen umiera podczas transformacji do cyberpsycho
         CyberPsycho newCP = new CyberPsycho(this.currentSimulation, this.position, this.agentID, this.getActualNumberOfImplants()); // wywoła konstruktor z utworzeniem psycho w tym samym miejscu zamiast citizena
         System.out.println("Citizen ID: " + this.agentID + " went crazy on square: " + newCP.getSquareId());
     }
 
+    /**
+     * Zwraca tekstową reprezentację stanu agenta.
+     * @return String zawierający szczegółowe informacje o stanie agenta.
+     */
     @Override
     public String toString() { // dane wyjściowe dla sprawdzenia informacji
         String arrayOfImplants = "";
@@ -149,27 +209,56 @@ public class Citizen extends Agent {
                 "Type of risk strategy: " + this.riskStrategy.getClass().getName();
     }
 
-    // gettery
+    /**
+     * Zwraca wartość wskazującą, czy agent jest martwy.
+     *
+     * @return true, jeśli agent jest martwy; false, jeśli żyje.
+     */
     public boolean getIsDead() {
         return isDead;
     }
 
+    /**
+     * Zwraca ilość zaoszczędzonych środków przez agenta.
+     *
+     * @return wartość typu double reprezentująca zaoszczędzoną kwotę.
+     */
     public double getSavedAmount() {
         return this.savedAmount;
     }
 
+    /**
+     * Zwraca mnożnik dochodów agenta.
+     *
+     * @return wartość typu double reprezentująca mnożnik dochodów.
+     */
     public double getIncomeMultiplier() {
         return this.incomeMultiplier;
     }
 
+    /**
+     * Zwraca ilość docelowych implantów.
+     *
+     * @return wartość typu int reprezentująca ilosc docelowych implantów.
+     */
     public int getTargetImplantNumber() {
         return targetImplantNumber;
     }
 
+    /**
+     * Zwraca poziom pożądania zakupu implantu przez agenta.
+     *
+     * @return wartość typu int reprezentująca poziom pożądania zakupu implantu.
+     */
     public int getDesireBuyImplantNow() {
         return desireBuyImplantNow;
     }
 
+    /**
+     * Zwraca tablicę implantów posiadanych przez agenta.
+     *
+     * @return tablica obiektów typu Implant reprezentująca implanty agenta.
+     */
     public Implant[] getImplants() {
         return implants;
     }

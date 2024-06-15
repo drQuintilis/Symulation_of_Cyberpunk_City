@@ -8,6 +8,13 @@ import org.example.maxtak.MaxtakCorp;
 public class MaxtakAgent extends Agent {
 
     private MaxtakCorp maxtakCorp;
+
+    /**
+     * konstruktor klasy MaxtakAgent
+     * @param simulation aktywna symulacja
+     * @param citySquare klasa dzielnicy planszy
+     * @param agentID numer agenta
+     */
     public MaxtakAgent( // konstruktor klasy maxtak agent
             Simulation simulation,
             CitySquare citySquare,
@@ -17,12 +24,26 @@ public class MaxtakAgent extends Agent {
         this.maxtakCorp = simulation.getMaxtak();
     }
 
+    /**
+     * dodatkowa funkcja śmierci, bo agent deregistruje Agenta Maxtak z maxtak corp
+     */
     public void die(){  // dodatkowa funkcja śmierci, bo agent maxtak potrzebuje deregistracji jeszcze z maxtak corp
         if (this.isDead) return;
         super.die();
         this.maxtakCorp.deregisterAgent(this);
     }
 
+    /**
+     * Wykonuje ruch agenta w kierunku najbliższej dzielnicy z aktywnym psycho.
+     * <p>
+     * Pobiera tablicę aktywnych dzielnic z psycho od maxtak corp.
+     * Szuka najkrótszej ścieżki do każdej z aktywnych dzielnic z psycho.
+     * Jeśli nie ma ścieżki do psycho, agent porusza się do dowolnej sąsiedniej dzielnicy.
+     * Jeśli nie znaleziono ścieżki lub najbliższa ścieżka jest pusta,
+     * a na obecnej pozycji nie ma psycho, agent anuluje zgłoszenie dla tej pozycji.
+     * W przeciwnym razie agent prosi o poruszenie się do pierwszego wierzchołka
+     * na najkrótszej ścieżce do psycho.
+     */
     protected void doMovement() {
         Integer[] activePsychoSquares = this.maxtakCorp.getActivePsychoSquares(); // pobieramy tablicę aktywnych dzielnic z psycho
         if (activePsychoSquares.length == 0) return;
@@ -46,13 +67,19 @@ public class MaxtakAgent extends Agent {
             if (!this.position.isPsychoHere()) this.maxtakCorp.deregisterCall(this.position.squareID); // jeśli na obecnej pozycji nie ma psycho, anulujemy zgłoszenie
         } else this.position.requestMovement(this,closestPsycho[0]); // Prośba o poruszaniu się do pierwszego wierzchołka w najbliższej ścieżce do psycho
     }
-
+    /**
+     * Jeśli na bieżącej pozycji znajduje się psycho, atakowany jest z siłą "-1".
+     */
     private void attackPsycho(){ // maxtak agenty atakują psycho zawsze z wartością "-1" żeby można było ich odróżnić od ataku solo
         if (this.position.isPsychoHere()) {
             this.position.getPsycho().attack(-1);
         }
     }
 
+    /**
+     * Wykonuje pojedynczy krok symulacji dla Maxtaka na podstawie etapu kroku.
+     * @param step Etap kroku symulacji określony przez enum TickSteps.
+     */
     public void doTick(TickSteps step){
         if(!this.isDead) {
             if (step == TickSteps.MOVEMENTS_REQUESTS) doMovement();
