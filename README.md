@@ -1,4 +1,4 @@
-**Project Description**
+# Project Description (simulation of cyberpunk city)
 
 
 The project was implemented under the subject Object-Oriented Programming.
