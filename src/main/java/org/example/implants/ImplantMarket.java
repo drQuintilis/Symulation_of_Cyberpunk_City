@@ -50,7 +50,7 @@ public class ImplantMarket {
         this.minProbOfFail = minProbOfFail;
     }
     /**
-     * Kupuwanie implant na podstawie zaproponowanej ceny.
+     * Kupowanie implantu na podstawie zaproponowanej ceny.
      *<p>
      * @param proposedPrice zaproponowana cena za implant
      * @return nowy implant z określoną szansą awarii
